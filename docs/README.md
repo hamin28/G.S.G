@@ -138,7 +138,7 @@ JSON 자체가 잘못되어 요청 식별자를 읽을 수 없으면 `ERROR`의 
 `GAME_START`, `GAME_STATE`의 `payload` 구조는 같습니다. 아래 ID와 점수는 형식 설명용 예시입니다.
 
 ```json
-{"version":1,"type":"GAME_STATE","payload":{"gameId":"game-1","revision":3,"phase":"WAIT_PLAY","currentPlayerId":"player-1","myHand":[12,20,31],"tableCards":[4,17,18],"deckCount":21,"players":[{"playerId":"player-1","handCount":3,"capturedCards":[2,6],"score":0,"goCount":0},{"playerId":"player-2","handCount":3,"capturedCards":[8],"score":0,"goCount":0}],"pendingChoice":null}}
+{"type":"GAME_STATE","payload":{"gameId":"game-1","revision":3,"phase":"WAIT_PLAY","currentPlayerId":"player-1","myHand":[12,20,31],"tableCards":[4,17,18],"deckCount":21,"players":[{"playerId":"player-1","handCount":3,"capturedCards":[2,6],"score":0,"goCount":0},{"playerId":"player-2","handCount":3,"capturedCards":[8],"score":0,"goCount":0}],"pendingChoice":null}}
 ```
 
 | 필드 | 의미 |
