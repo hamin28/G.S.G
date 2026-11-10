@@ -39,13 +39,13 @@ TCP는 한 번 보낸 데이터가 한 번의 수신으로 도착하는 것을 �
 성공 응답 예시:
 
 ```json
-{"version":1,"type":"ACK","requestId":"req-15","payload":{"requestType":"PLAY_CARD"}}
+{"type":"ACK","requestId":"req-15","payload":{"requestType":"PLAY_CARD"}}
 ```
 
 오류 응답 예시:
 
 ```json
-{"version":1,"type":"ERROR","requestId":"req-15","payload":{"code":"NOT_YOUR_TURN","message":"자신의 차례가 아닙니다."}}
+{"type":"ERROR","requestId":"req-15","payload":{"code":"NOT_YOUR_TURN","message":"자신의 차례가 아닙니다."}}
 ```
 
 JSON 자체가 잘못되어 요청 식별자를 읽을 수 없으면 `ERROR`의 `requestId`를 생략합니다. 오류 시 게임 상태를 변경하지 않습니다. 문서에 없는 추가 필드는 무시하되 필수 필드 누락, 자료형 오류, 허용되지 않은 값은 거절합니다. 식별자는 불투명한 값으로 취급하며 화면상의 위치나 접속 순서로 추정하지 않습니다.
@@ -68,7 +68,7 @@ JSON 자체가 잘못되어 요청 식별자를 읽을 수 없으면 `ERROR`의 
 `JOIN` 성공 시 `ACK.payload`에 `playerId`를 추가합니다. `CREATE_ROOM`, `JOIN_ROOM` 성공 시에는 `roomId`를 추가합니다.
 
 ```json
-{"version":1,"type":"ACK","requestId":"req-1","payload":{"requestType":"JOIN","playerId":"player-1"}}
+{"type":"ACK","requestId":"req-1","payload":{"requestType":"JOIN","playerId":"player-1"}}
 ```
 
 | 서버 이벤트 | 데이터 |
@@ -87,13 +87,13 @@ JSON 자체가 잘못되어 요청 식별자를 읽을 수 없으면 `ERROR`의 
 클라이언트 → 서버:
 
 ```json
-{"version":1,"type":"CHAT","requestId":"req-8","payload":{"message":"안녕하세요!"}}
+{"type":"CHAT","requestId":"req-8","payload":{"message":"안녕하세요!"}}
 ```
 
 서버 → 같은 방 전체(보낸 사람 포함):
 
 ```json
-{"version":1,"type":"CHAT_MESSAGE","payload":{"playerId":"player-1","nickname":"철수","message":"안녕하세요!"}}
+{"type":"CHAT_MESSAGE","payload":{"playerId":"player-1","nickname":"철수","message":"안녕하세요!"}}
 ```
 
 - 앞뒤 공백을 제거한 내용이 비어 있으면 거절합니다.
@@ -116,11 +116,11 @@ JSON 자체가 잘못되어 요청 식별자를 읽을 수 없으면 `ERROR`의 
 선택이 필요하면 서버가 해당 플레이어에게 `CHOICE_REQUIRED`를 전송합니다. 선택 중에는 다른 패 내기 요청을 거절합니다. `choiceId`는 게임 내 고유하며 한 번 처리한 선택은 재사용할 수 없습니다.
 
 ```json
-{"version":1,"type":"CHOICE_REQUIRED","payload":{"gameId":"game-1","choiceId":"choice-1","kind":"CAPTURE","cardIds":[17,18]}}
+{"type":"CHOICE_REQUIRED","payload":{"gameId":"game-1","choiceId":"choice-1","kind":"CAPTURE","cardIds":[17,18]}}
 ```
 
 ```json
-{"version":1,"type":"CHOICE_REQUIRED","payload":{"gameId":"game-1","choiceId":"choice-2","kind":"GO_STOP","options":["GO","STOP"]}}
+{"type":"CHOICE_REQUIRED","payload":{"gameId":"game-1","choiceId":"choice-2","kind":"GO_STOP","options":["GO","STOP"]}}
 ```
 
 `CAPTURE`에는 `cardIds`, `GO_STOP`에는 `options`를 포함합니다. 클라이언트는 제시된 후보만 선택할 수 있습니다. 선택이 해결되면 최신 상태에서 `pendingChoice`를 `null`로 변경합니다.
@@ -160,7 +160,7 @@ JSON 자체가 잘못되어 요청 식별자를 읽을 수 없으면 `ERROR`의 
 게임 종료 예시:
 
 ```json
-{"version":1,"type":"GAME_OVER","payload":{"gameId":"game-1","reason":"STOP","winnerId":"player-1","results":[{"playerId":"player-1","score":7,"goCount":1},{"playerId":"player-2","score":2,"goCount":0}]}}
+{"type":"GAME_OVER","payload":{"gameId":"game-1","reason":"STOP","winnerId":"player-1","results":[{"playerId":"player-1","score":7,"goCount":1},{"playerId":"player-2","score":2,"goCount":0}]}}
 ```
 
 `reason`은 `STOP`, `DRAW`, `PLAYER_LEFT` 중 하나입니다. 무승부나 접속 종료로 경기가 취소되면 `winnerId`는 `null`로 합니다. 접속 종료를 몰수패로 처리하려면 별도의 팀 규칙 확정 후 이 명세도 수정합니다.
