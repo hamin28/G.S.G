@@ -356,7 +356,7 @@
     "cardId": 51,
     "month": null,
     "variant": 1,
-    "type": "back",
+    "type": "CARD_BACK",
     "imagePath": "hwatu_image/back.png"
   }
 ]
