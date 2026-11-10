@@ -350,5 +350,13 @@
     "type": "BONUS",
     "printedValue": 3,
     "imagePath": "hwatu_image/bonus_2.png"
+  },
+  
+  {
+    "cardId": 51,
+    "month": null,
+    "variant": 1,
+    "type": "back",
+    "imagePath": "hwatu_image/back.png"
   }
 ]
