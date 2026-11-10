@@ -23,7 +23,7 @@ TCP는 한 번 보낸 데이터가 한 번의 수신으로 도착하는 것을 �
 ## 2. 공통 메시지 구조
 
 ```json
-{"version":1,"type":"PLAY_CARD","requestId":"req-15","payload":{"cardId":12}}
+{"type":"PLAY_CARD","requestId":"req-15","payload":{"cardId":12}}
 ```
 
 | 필드 | 자료형 | 설명 |
