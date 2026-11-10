@@ -1,0 +1,354 @@
+[
+  {
+    "cardId": 1,
+    "month": 1,
+    "variant": 1,
+    "type": "GWANG",
+    "imagePath": "hwatu_image/january_1.png"
+  },
+  {
+    "cardId": 2,
+    "month": 1,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/january_2.png"
+  },
+  {
+    "cardId": 3,
+    "month": 1,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/january_3.png"
+  },
+  {
+    "cardId": 4,
+    "month": 1,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/january_4.png"
+  },
+  {
+    "cardId": 5,
+    "month": 2,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/february_1.png"
+  },
+  {
+    "cardId": 6,
+    "month": 2,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/february_2.png"
+  },
+  {
+    "cardId": 7,
+    "month": 2,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/february_3.png"
+  },
+  {
+    "cardId": 8,
+    "month": 2,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/february_4.png"
+  },
+  {
+    "cardId": 9,
+    "month": 3,
+    "variant": 1,
+    "type": "GWANG",
+    "imagePath": "hwatu_image/march_1.png"
+  },
+  {
+    "cardId": 10,
+    "month": 3,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/march_2.png"
+  },
+  {
+    "cardId": 11,
+    "month": 3,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/march_3.png"
+  },
+  {
+    "cardId": 12,
+    "month": 3,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/march_4.png"
+  },
+  {
+    "cardId": 13,
+    "month": 4,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/april_1.png"
+  },
+  {
+    "cardId": 14,
+    "month": 4,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/april_2.png"
+  },
+  {
+    "cardId": 15,
+    "month": 4,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/april_3.png"
+  },
+  {
+    "cardId": 16,
+    "month": 4,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/april_4.png"
+  },
+  {
+    "cardId": 17,
+    "month": 5,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/may_1.png"
+  },
+  {
+    "cardId": 18,
+    "month": 5,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/may_2.png"
+  },
+  {
+    "cardId": 19,
+    "month": 5,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/may_3.png"
+  },
+  {
+    "cardId": 20,
+    "month": 5,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/may_4.png"
+  },
+  {
+    "cardId": 21,
+    "month": 6,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/june_1.png"
+  },
+  {
+    "cardId": 22,
+    "month": 6,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/june_2.png"
+  },
+  {
+    "cardId": 23,
+    "month": 6,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/june_3.png"
+  },
+  {
+    "cardId": 24,
+    "month": 6,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/june_4.png"
+  },
+  {
+    "cardId": 25,
+    "month": 7,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/july_1.png"
+  },
+  {
+    "cardId": 26,
+    "month": 7,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/july_2.png"
+  },
+  {
+    "cardId": 27,
+    "month": 7,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/july_3.png"
+  },
+  {
+    "cardId": 28,
+    "month": 7,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/july_4.png"
+  },
+  {
+    "cardId": 29,
+    "month": 8,
+    "variant": 1,
+    "type": "GWANG",
+    "imagePath": "hwatu_image/august_1.png"
+  },
+  {
+    "cardId": 30,
+    "month": 8,
+    "variant": 2,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/august_2.png"
+  },
+  {
+    "cardId": 31,
+    "month": 8,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/august_3.png"
+  },
+  {
+    "cardId": 32,
+    "month": 8,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/august_4.png"
+  },
+  {
+    "cardId": 33,
+    "month": 9,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/september_1.png"
+  },
+  {
+    "cardId": 34,
+    "month": 9,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/september_2.png"
+  },
+  {
+    "cardId": 35,
+    "month": 9,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/september_3.png"
+  },
+  {
+    "cardId": 36,
+    "month": 9,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/september_4.png"
+  },
+  {
+    "cardId": 37,
+    "month": 10,
+    "variant": 1,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/october_1.png"
+  },
+  {
+    "cardId": 38,
+    "month": 10,
+    "variant": 2,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/october_2.png"
+  },
+  {
+    "cardId": 39,
+    "month": 10,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/october_3.png"
+  },
+  {
+    "cardId": 40,
+    "month": 10,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/october_4.png"
+  },
+  {
+    "cardId": 41,
+    "month": 11,
+    "variant": 1,
+    "type": "GWANG",
+    "imagePath": "hwatu_image/november_1.png"
+  },
+  {
+    "cardId": 42,
+    "month": 11,
+    "variant": 2,
+    "type": "PI",
+    "imagePath": "hwatu_image/november_2.png"
+  },
+  {
+    "cardId": 43,
+    "month": 11,
+    "variant": 3,
+    "type": "PI",
+    "imagePath": "hwatu_image/november_3.png"
+  },
+  {
+    "cardId": 44,
+    "month": 11,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/november_4.png"
+  },
+  {
+    "cardId": 45,
+    "month": 12,
+    "variant": 1,
+    "type": "GWANG",
+    "imagePath": "hwatu_image/december_1.png"
+  },
+  {
+    "cardId": 46,
+    "month": 12,
+    "variant": 2,
+    "type": "ANIMAL",
+    "imagePath": "hwatu_image/december_2.png"
+  },
+  {
+    "cardId": 47,
+    "month": 12,
+    "variant": 3,
+    "type": "RIBBON",
+    "imagePath": "hwatu_image/december_3.png"
+  },
+  {
+    "cardId": 48,
+    "month": 12,
+    "variant": 4,
+    "type": "PI",
+    "imagePath": "hwatu_image/december_4.png"
+  },
+  {
+    "cardId": 49,
+    "month": null,
+    "variant": 1,
+    "type": "BONUS",
+    "printedValue": 2,
+    "imagePath": "hwatu_image/bonus_1.png"
+  },
+  {
+    "cardId": 50,
+    "month": null,
+    "variant": 2,
+    "type": "BONUS",
+    "printedValue": 3,
+    "imagePath": "hwatu_image/bonus_2.png"
+  }
+]
