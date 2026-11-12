@@ -7,24 +7,31 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
-/* 레이아웃: 로비(종이 바탕 카드 2장) ↔ 게임 방(초록 담요 판 + 오른쪽 채팅). Swing 클라이언트와 같은 배치·색.
-   한 가지 화면 세계(화투판)를 쓰는 의도적인 단일 테마. */
+/* 레이아웃
+   로비: 짙은 초록 틀 안에 왼쪽 큰 방 목록 + 오른쪽 좁은 내 정보 칸 (온라인 맞고 로비 배치).
+   게임: 16:9 판. 왼쪽 초록 담요(획득패·바닥패·덱), 오른쪽 세로 패널(상대 정보 → 상태 → 내 손패 → 내 정보 → 버튼).
+   화투판이라는 한 가지 화면 세계를 쓰는 의도적인 단일 테마. */
 :root {
   --red: #c81e1e;
   --red-dark: #961414;
-  --ink: #221e1c;
-  --paper: #f6f1e7;
-  --paper-dark: #e3d9c6;
+  --teal: #11897f;
+  --teal-dark: #0b6a62;
+  --ink: #1d1a17;
+  --paper: #f4f1e8;
+  --paper-2: #e7e1d2;
   --white: #ffffff;
-  --felt: #1f5c3a;
-  --felt-dark: #15422a;
-  --felt-line: #2e774e;
-  --felt-text: #d4e6da;
-  --felt-muted: #a9c9b4;
-  --gold: #ffd600;
-  --muted: #776e64;
+  --frame: #173a27;
+  --frame-2: #0f2a1b;
+  --frame-line: #2c5e41;
+  --felt: #2a6b43;
+  --felt-dark: #1d4f31;
+  --felt-line: rgba(255,255,255,.14);
+  --felt-text: #d6e8dc;
+  --felt-muted: #9cc1a8;
+  --gold: #ffd23f;
+  --muted: #6f675d;
   --good: #1e7a3c;
   --display: "Black Han Sans", "Noto Sans KR", "Malgun Gothic", sans-serif;
   --body: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
@@ -34,277 +41,213 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { height: 100%; }
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--body);
-  font-size: 14px;
-  line-height: 1.5;
-}
-button { font: inherit; }
+body { margin: 0; background: var(--frame-2); color: var(--ink); font-family: var(--body); font-size: 14px; line-height: 1.5; }
+button { font: inherit; color: inherit; }
 button:focus-visible, input:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
-.btn {
-  border: 1px solid var(--paper-dark);
-  background: var(--white);
-  color: var(--ink);
-  font-weight: 700;
-  padding: 7px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  white-space: nowrap;
-}
+.num { font-variant-numeric: tabular-nums; }
+
+.btn { border: 1px solid var(--paper-2); background: var(--white); color: var(--ink); font-weight: 700; padding: 7px 14px; border-radius: 4px; cursor: pointer; white-space: nowrap; }
 .btn:hover:not(:disabled) { border-color: var(--ink); }
-.btn.primary { background: var(--red); border-color: var(--red-dark); color: var(--white); }
-.btn.primary:hover:not(:disabled) { background: var(--red-dark); }
-.btn.dark { background: transparent; border-color: #4a443f; color: var(--white); }
-.btn:disabled { opacity: .45; cursor: default; }
-input[type=text] {
-  font: inherit;
-  padding: 7px 10px;
-  border: 1px solid var(--paper-dark);
-  border-radius: 4px;
-  background: var(--white);
-  color: var(--ink);
-  min-width: 0;
-}
-input[readonly] { background: var(--paper); color: var(--muted); }
+.btn.red { background: var(--red); border-color: var(--red-dark); color: var(--white); }
+.btn.red:hover:not(:disabled) { background: var(--red-dark); }
+.btn.teal { background: var(--teal); border-color: var(--teal-dark); color: var(--white); }
+.btn.teal:hover:not(:disabled) { background: var(--teal-dark); }
+.btn.ghost { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); color: var(--white); }
+.btn.ghost:hover:not(:disabled) { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.5); }
+.btn:disabled { opacity: .4; cursor: default; }
+input[type=text] { font: inherit; padding: 8px 10px; border: 1px solid var(--paper-2); border-radius: 4px; background: var(--white); color: var(--ink); min-width: 0; }
 
 /* 시연판 안내 띠 */
-.demo-band {
-  background: var(--gold);
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 700;
-  padding-block: 5px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+.demo-band { background: var(--gold); color: var(--ink); font-size: 12px; font-weight: 700; padding-block: 5px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap; }
 .band-actions { display: flex; gap: 16px; }
-.demo-band button { background: none; border: 0; padding: 0; font-weight: 700; text-decoration: underline; cursor: pointer; color: inherit; }
+.demo-band button { background: none; border: 0; padding: 0; font-weight: 700; text-decoration: underline; cursor: pointer; }
 
-.screen { display: flex; flex-direction: column; min-height: calc(100% - 28px); }
+/* ======================= 로비 ======================= */
+.lobby { padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.lframe { max-width: 1120px; margin: 0 auto; background: var(--frame); border: 1px solid var(--frame-line); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.ltop {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 20px 24px;
+  background:
+    radial-gradient(circle at 12% 30%, rgba(255,210,63,.18), transparent 40%),
+    linear-gradient(120deg, #215a3a, #173a27 60%);
+  border-bottom: 4px solid var(--red);
+}
+.logo { font-family: var(--display); color: var(--white); font-size: 40px; line-height: 1; letter-spacing: .5px; }
+.logo .q { color: var(--gold); }
+.logo-sub { color: var(--felt-muted); font-size: 13px; margin-top: 6px; }
+.make-btn { font-size: 18px; padding: 14px 28px; border-radius: 6px; box-shadow: 0 4px 0 var(--teal-dark); }
+.make-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--teal-dark); }
+.lmain { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 14px; padding: 14px; }
 
-/* ---------------- 로비 ---------------- */
-.lobby-head {
-  background: var(--ink);
-  color: var(--white);
-  padding-block: 18px 0;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-.logo { font-family: var(--display); font-size: 34px; line-height: 1.1; letter-spacing: .5px; }
-.logo .q { color: var(--red); }
-.lobby-head .sub { color: #c9c1b4; font-size: 13px; margin-top: 2px; }
-.lobby-head .band { height: 8px; background: var(--red); margin-top: 16px; }
-.lobby-body {
-  flex: 1;
-  display: grid;
-  gap: 16px;
-  align-content: start;
-  padding-block: 20px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
-}
-.panel {
-  background: var(--white);
-  border: 1px solid var(--paper-dark);
-  padding: 16px;
-  min-width: 0;
-}
-.panel h2 { font-size: 16px; margin: 0 0 10px; }
-.connect-row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
-.field { display: flex; gap: 8px; align-items: center; }
-.field label { color: var(--muted); font-size: 13px; white-space: nowrap; }
-.hint { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
-.welcome { font-weight: 700; margin: 6px 0 0; min-height: 1.5em; }
-.rooms-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-.rooms-head h2 { margin: 0; }
-.rooms-head .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.create-form { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; background: var(--paper); padding: 10px; margin-bottom: 10px; border: 1px dashed var(--paper-dark); }
-.create-form input { flex: 1 1 200px; }
-.table-wrap { overflow-x: auto; border: 1px solid var(--paper-dark); }
-table.rooms { width: 100%; border-collapse: collapse; min-width: 420px; }
-table.rooms th { background: var(--paper); font-size: 13px; text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--paper-dark); }
-table.rooms th.c, table.rooms td.c { text-align: center; }
-table.rooms td { padding: 9px 12px; border-bottom: 1px solid var(--paper); font-variant-numeric: tabular-nums; }
-table.rooms tbody tr { cursor: pointer; }
-table.rooms tbody tr:hover td { background: #fbf6ee; }
-table.rooms tbody tr.sel td { background: #fbe3e3; }
-table.rooms tbody tr.off { color: var(--muted); cursor: default; }
-.st { font-weight: 700; font-size: 13px; }
-.st.wait { color: var(--good); }
-.st.play { color: var(--muted); }
-.empty { color: var(--muted); text-align: center; padding: 18px; }
-.statusbar {
-  background: var(--paper-dark);
-  font-size: 12px;
-  color: var(--muted);
-  padding-block: 6px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-.statusbar.err { color: var(--red); font-weight: 700; }
+.rlist { background: var(--paper); min-width: 0; display: flex; flex-direction: column; }
+.rl-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--paper-2); flex-wrap: wrap; }
+.rl-head h2 { margin: 0; font-size: 17px; }
+.rl-head .meta { color: var(--muted); font-size: 13px; margin-left: 8px; font-weight: 500; }
+.tabs { display: flex; gap: 4px; }
+.tab { border: 1px solid var(--paper-2); background: var(--white); padding: 5px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--muted); }
+.tab[aria-pressed="true"] { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.rl-tools { display: flex; gap: 8px; align-items: center; }
+.rows-wrap { overflow-x: auto; }
+.rows { min-width: 520px; }
+.rrow, .rhead { display: grid; grid-template-columns: 52px minmax(0, 1fr) 90px 100px 96px; align-items: center; gap: 8px; padding: 0 14px; }
+.rhead { height: 34px; background: var(--paper-2); font-size: 12px; font-weight: 700; color: var(--muted); }
+.rrow { height: 58px; background: var(--white); border-bottom: 1px solid var(--paper); }
+.rrow:hover { background: #fbf8f1; }
+.rrow .no { color: var(--muted); font-weight: 700; }
+.rrow .title { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rrow.full .title, .rrow.full .cnt { color: var(--muted); }
+.c { text-align: center; }
+.cnt { font-weight: 700; }
+.badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.badge.wait { background: #e1f2e6; color: var(--good); }
+.badge.play { background: #ece8df; color: var(--muted); }
+.rrow .btn { padding: 7px 0; width: 100%; }
+.rempty { padding: 40px 16px; text-align: center; color: var(--muted); background: var(--white); }
+.rempty b { display: block; color: var(--ink); font-size: 15px; margin-bottom: 4px; }
 
-/* ---------------- 게임 방 ---------------- */
-.room-head {
-  background: var(--ink);
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-block: 10px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-.room-head .t { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
-.room-head h1 { font-size: 18px; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pill { color: var(--gold); font-size: 12px; font-weight: 700; white-space: nowrap; }
-.room-body { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-height: 0; }
-.board {
-  background: linear-gradient(var(--felt), var(--felt-dark));
-  color: var(--white);
-  padding: 14px 18px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
+.me-box { background: var(--frame-2); border: 1px solid var(--frame-line); color: var(--white); padding: 16px; display: flex; flex-direction: column; gap: 14px; align-self: start; }
+.me-head { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--red); color: var(--white); display: grid; place-items: center; font-weight: 900; font-size: 22px; flex: 0 0 auto; border: 3px solid rgba(255,255,255,.25); }
+.avatar.opp { background: #4b5bd1; }
+.avatar.empty { background: transparent; border: 2px dashed var(--felt-muted); color: var(--felt-muted); }
+.me-head .lbl { color: var(--felt-muted); font-size: 12px; }
+.me-head .nm { font-weight: 700; font-size: 18px; word-break: break-all; }
+.money { background: rgba(255,255,255,.06); border: 1px solid var(--frame-line); padding: 12px; }
+.money .lbl { color: var(--felt-muted); font-size: 12px; }
+.money .val { color: var(--gold); font-weight: 900; font-size: 24px; line-height: 1.2; }
+.money .rule { color: var(--felt-muted); font-size: 12px; margin-top: 4px; }
+.lstatus { color: var(--felt-muted); font-size: 12px; padding: 0 14px 12px; min-height: 30px; }
+.lstatus.err { color: #ffb4a8; font-weight: 700; }
+
+/* ======================= 게임 방 ======================= */
+.room { padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.stage-wrap { max-width: 1120px; margin: 0 auto; }
+.room-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--white); margin-bottom: 8px; }
+.room-head h1 { margin: 0; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.room-head .pill { color: var(--gold); font-size: 12px; font-weight: 700; white-space: nowrap; margin-left: 10px; }
+.room-head .rule { color: var(--felt-muted); font-size: 12px; white-space: nowrap; }
+.stage-box { position: relative; width: 100%; overflow: hidden; }
+.stage { position: absolute; left: 0; top: 0; width: 1120px; height: 630px; transform-origin: 0 0; display: grid; grid-template-columns: 1fr 300px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+
+/* 왼쪽 담요 */
+.felt { position: relative; background: radial-gradient(ellipse at 50% 45%, var(--felt), var(--felt-dark) 75%); color: var(--white); padding: 12px 16px; display: grid; grid-template-rows: 128px 1fr 128px; gap: 6px; overflow: hidden; }
+.band { display: flex; gap: 18px; align-items: flex-start; }
+.band.bottom { align-items: flex-end; }
+.groups { display: flex; gap: 14px; flex-wrap: nowrap; align-items: flex-end; }
+.group .gl { display: block; color: var(--felt-muted); font-size: 11px; font-weight: 700; margin-bottom: 2px; }
+.stack { display: flex; min-height: 62px; min-width: 38px; }
+.stack img { width: 38px; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
+.stack img + img { margin-left: -26px; }
+.stack.pi img + img { margin-left: -29px; }
+.backs { display: flex; margin-left: auto; padding-top: 4px; }
+.backs img { width: 34px; filter: drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
+.backs img + img { margin-left: -20px; }
+
+.tablearea { display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 1fr 1fr; gap: 6px 4px; align-items: center; justify-items: center; border-top: 1px dashed var(--felt-line); border-bottom: 1px dashed var(--felt-line); padding: 8px 0; }
+.deckcell { grid-column: 4; grid-row: 1 / span 2; display: grid; justify-items: center; gap: 6px; }
+.pile { position: relative; width: 62px; height: 101px; }
+.pile img { position: absolute; width: 62px; left: 0; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)); }
+.deckcnt { font-size: 12px; font-weight: 700; color: var(--felt-text); }
+.cluster { display: flex; position: relative; }
+.cluster .cardbtn + .cardbtn { margin-left: -34px; }
+.cluster.spread { gap: 6px; z-index: 3; }
+.cluster.spread .cardbtn + .cardbtn { margin-left: 0; }
+
+.cardbtn { border: 0; padding: 0; background: none; width: 56px; position: relative; border-radius: 5px; transition: transform .12s ease; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)); }
+.cardbtn img { display: block; width: 100%; border-radius: 5px; }
+.cardbtn:disabled { cursor: default; }
+.cardbtn.cand { outline: 3px solid var(--gold); outline-offset: -1px; cursor: pointer; z-index: 2; }
+.cardbtn.cand:hover { transform: translateY(-6px); }
+.cardbtn.dim::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.45); border-radius: 5px; }
+.cardbtn.fresh { animation: drop .35s ease; }
+@keyframes drop { from { transform: translateY(-14px) scale(1.06); opacity: .3; } to { transform: none; opacity: 1; } }
+
+/* 판 위 안내 */
+.toast { position: absolute; left: 50%; top: 132px; transform: translateX(-50%); background: rgba(13,30,20,.85); color: var(--white); font-weight: 700; padding: 6px 16px; border-radius: 999px; font-size: 13px; white-space: nowrap; pointer-events: none; transition: opacity .3s; }
+.prompt { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: rgba(13,30,20,.92); border: 2px solid var(--gold); padding: 16px 22px; text-align: center; z-index: 5; }
+.prompt .t { color: var(--gold); font-weight: 900; font-size: 20px; margin-bottom: 4px; }
+.prompt .s { color: var(--felt-text); font-size: 13px; margin-bottom: 12px; }
+.prompt .row { display: flex; gap: 10px; justify-content: center; }
+.prompt .btn { font-size: 18px; padding: 10px 0; width: 120px; }
 
 /* 대기 */
-.wait-view { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding-block: 20px; }
-.wait-view h2 { font-size: 24px; margin: 0; }
-.wait-view .hint2 { color: var(--felt-text); margin: 0; }
-.seats { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-block: 14px; }
-.seat {
-  width: 220px; max-width: 100%;
-  height: 150px;
-  background: var(--paper);
-  color: var(--ink);
-  border-bottom: 4px solid var(--paper-dark);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-}
+.waitview { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; background: radial-gradient(ellipse at 50% 45%, var(--felt), var(--felt-dark) 75%); }
+.waitview h2 { margin: 0; font-size: 26px; font-family: var(--display); font-weight: 400; letter-spacing: .5px; }
+.waitview p { margin: 0; color: var(--felt-text); }
+.seats { display: flex; gap: 22px; margin-block: 12px; }
+.seat { width: 210px; height: 140px; background: var(--paper); color: var(--ink); border-bottom: 5px solid var(--paper-2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
 .seat.ready { border-bottom-color: var(--red); }
-.seat .n { font-size: 20px; font-weight: 700; }
-.seat .s { font-size: 14px; font-weight: 700; color: var(--muted); }
+.seat .n { font-size: 19px; font-weight: 700; }
+.seat .s { font-size: 13px; font-weight: 700; color: var(--muted); }
 .seat.ready .s { color: var(--red); }
 .seat.empty { background: transparent; border: 2px dashed var(--felt-muted); color: var(--felt-muted); }
 .seat.empty .s { color: var(--felt-muted); }
-.ready-btn { font-size: 18px; padding: 12px 0; width: 220px; max-width: 100%; }
+.readybtn { font-size: 18px; padding: 12px 0; width: 220px; }
 
-/* 게임 */
-.game-view { flex: 1; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
-.parea { display: grid; gap: 4px; }
-.pline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.pline .name { font-weight: 700; font-size: 15px; }
-.pline .info { color: var(--felt-text); font-size: 13px; font-variant-numeric: tabular-nums; }
-.turn-badge { background: var(--gold); color: var(--ink); font-size: 12px; font-weight: 700; padding: 0 6px; }
-.prow { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
-.backs, .stack { display: flex; }
-.backs img { width: 40px; }
-.backs img + img { margin-left: -18px; }
-.groups { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; }
-.group .gl { color: var(--felt-muted); font-size: 12px; font-weight: 700; display: block; }
-.stack { min-height: 55px; min-width: 34px; }
-.stack img { width: 34px; }
-.stack img + img { margin-left: -23px; }
-.tablearea {
-  flex: 1;
-  border: 2px solid var(--felt-line);
-  border-radius: 6px;
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  padding: 10px 14px;
-  min-height: 150px;
-}
-.deck { display: grid; justify-items: center; gap: 4px; flex: 0 0 auto; }
-.deck .pile { display: flex; }
-.deck .pile img { width: 52px; }
-.deck .pile img + img { margin-left: -48px; }
-.deck .cnt { font-weight: 700; font-size: 13px; font-variant-numeric: tabular-nums; }
-.tablecards { flex: 1; min-width: 0; }
-.tablecards .gl { color: var(--felt-muted); font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px; }
-.cards { display: flex; gap: 8px; flex-wrap: wrap; }
-.cardbtn {
-  border: 0; padding: 0; background: none;
-  width: 66px;
-  position: relative;
-  border-radius: 6px;
-  transition: transform .12s ease;
-  filter: drop-shadow(0 3px 2px rgba(0,0,0,.35));
-}
-.cardbtn img { display: block; width: 100%; border-radius: 6px; }
-.cardbtn:disabled { cursor: default; }
-.cardbtn.play { cursor: pointer; }
-.cardbtn.play:hover, .cardbtn.play:focus-visible { transform: translateY(-10px); }
-.cardbtn.cand { outline: 3px solid var(--gold); outline-offset: -1px; cursor: pointer; }
-.cardbtn.cand:hover { transform: translateY(-6px); }
-.cardbtn.dim::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.45); border-radius: 6px; }
-.turnbar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; min-height: 42px; }
-.turnlabel { font-weight: 700; font-size: 16px; }
-.turnlabel.mine { color: var(--gold); }
-.gs { font-size: 16px; padding: 8px 0; width: 110px; }
-.hand { display: flex; justify-content: center; gap: 6px; padding-top: 10px; }
-.hand .cardbtn { width: 76px; flex: 0 1 76px; min-width: 0; }
+/* 오른쪽 패널 */
+.side { background: linear-gradient(var(--frame), var(--frame-2)); border-left: 1px solid var(--frame-line); color: var(--white); padding: 10px; display: grid; grid-template-rows: auto auto 1fr auto auto; gap: 8px; }
+.pbox { position: relative; background: rgba(255,255,255,.06); border: 1px solid var(--frame-line); padding: 10px; display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; align-items: center; }
+.pbox.turn { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+.pbox .who { min-width: 0; }
+.pbox .nm { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pbox .mn { color: var(--gold); font-weight: 700; font-size: 13px; }
+.pbox .score { text-align: right; }
+.pbox .score b { display: block; font-size: 30px; line-height: 1; font-weight: 900; color: var(--white); }
+.pbox .score span { color: var(--felt-muted); font-size: 11px; }
+.pbox .sub { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.1); color: var(--felt-text); }
+.chip.go { background: var(--red); color: var(--white); }
+.chip.turn { background: var(--gold); color: var(--ink); }
+.bubble { position: absolute; right: 8px; top: -14px; transform: translateY(-100%); max-width: 230px; background: var(--white); color: var(--ink); font-size: 13px; font-weight: 700; padding: 6px 10px; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,.3); z-index: 6; word-break: break-word; }
+.bubble::after { content: ""; position: absolute; right: 22px; bottom: -7px; border: 7px solid transparent; border-top-color: var(--white); border-bottom: 0; }
+.bubble.below { top: auto; bottom: -14px; transform: translateY(100%); }
+.bubble.below::after { bottom: auto; top: -7px; border-top: 0; border-bottom: 7px solid var(--white); }
+.status { background: var(--frame-2); border: 1px solid var(--frame-line); padding: 8px 10px; text-align: center; }
+.status .t { font-weight: 900; font-size: 15px; }
+.status .t.mine { color: var(--gold); }
+.status .s { color: var(--felt-muted); font-size: 12px; }
+.handbox { background: rgba(0,0,0,.22); border: 1px solid var(--frame-line); padding: 8px; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, auto); gap: 8px 6px; align-content: center; }
+.slot { position: relative; aspect-ratio: 150 / 245; border: 1px dashed rgba(255,255,255,.15); border-radius: 5px; }
+.slot .key { position: absolute; left: 3px; top: 1px; font-size: 10px; color: rgba(255,255,255,.35); font-weight: 700; }
+.slot .cardbtn { position: absolute; inset: 0; width: 100%; }
+.slot .cardbtn .key { color: var(--white); background: rgba(0,0,0,.55); padding: 0 4px; border-radius: 3px; z-index: 2; left: 2px; top: 2px; }
+.slot .cardbtn.play { cursor: pointer; }
+.slot .cardbtn.play:hover, .slot .cardbtn.play:focus-visible { transform: translateY(-8px); }
+.slot .cardbtn.play::before { content: ""; position: absolute; inset: -2px; border-radius: 7px; box-shadow: 0 0 0 2px var(--gold); opacity: .8; }
+.actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.actions .btn { padding: 8px 0; font-size: 13px; }
 
-/* 채팅 */
-.chat {
-  background: var(--paper);
-  border-left: 1px solid var(--paper-dark);
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 0;
-}
-.chat h2 { font-size: 15px; margin: 0; }
-.chatlog {
-  flex: 1;
-  min-height: 160px;
-  background: var(--white);
-  border: 1px solid var(--paper-dark);
-  padding: 6px 8px;
-  overflow-y: auto;
-  font-size: 13px;
-  word-break: break-word;
-}
+/* 채팅 팝업 */
+.chatpop { position: absolute; right: 10px; bottom: 54px; width: 280px; background: var(--paper); color: var(--ink); border: 1px solid var(--paper-2); box-shadow: 0 8px 24px rgba(0,0,0,.4); z-index: 8; display: flex; flex-direction: column; }
+.chatpop .hd { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--paper-2); font-weight: 700; }
+.chatpop .hd button { border: 0; background: none; cursor: pointer; font-size: 18px; line-height: 1; color: var(--muted); }
+.chatlog { height: 150px; overflow-y: auto; padding: 6px 10px; font-size: 13px; background: var(--white); word-break: break-word; }
 .chatlog .sys { color: var(--muted); font-style: italic; }
 .chatlog .nm { font-weight: 700; margin-right: 6px; }
 .chatlog .me .nm { color: var(--red); }
-.qlabel { color: var(--muted); font-size: 12px; font-weight: 700; }
-.quick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.quick .btn { font-size: 12px; padding: 6px 4px; }
-.chatin { display: flex; gap: 6px; }
-.chatin input { flex: 1; }
+.quick { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 8px 10px 0; }
+.quick .btn { font-size: 12px; padding: 5px 0; }
+.chatin { display: flex; gap: 6px; padding: 8px 10px 10px; }
+.chatin input { flex: 1; padding: 6px 8px; }
+.chatin .btn { padding: 6px 12px; }
 
 /* 모달 */
-.modal-bg { position: fixed; inset: 0; background: rgba(20,18,16,.55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 30; }
-.modal { background: var(--white); color: var(--ink); width: 360px; max-width: 100%; padding: 20px; border-top: 6px solid var(--red); }
-.modal h3 { margin: 0 0 10px; font-size: 18px; }
-.modal .body { white-space: pre-line; margin: 0 0 16px; }
+.modal-bg { position: fixed; inset: 0; background: rgba(10,20,14,.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 30; }
+.modal { background: var(--white); color: var(--ink); width: 380px; max-width: 100%; padding: 22px; border-top: 6px solid var(--red); }
+.modal h3 { margin: 0 0 8px; font-size: 19px; }
+.modal .body { margin: 0 0 14px; white-space: pre-line; }
+.modal .field { display: grid; gap: 6px; margin-bottom: 14px; }
+.modal .field label { font-size: 13px; color: var(--muted); font-weight: 700; }
+.modal .err { color: var(--red); font-size: 12px; font-weight: 700; min-height: 18px; margin: -6px 0 8px; }
 .modal .row { display: flex; gap: 8px; justify-content: flex-end; }
+.result { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+.result td { padding: 6px 4px; border-bottom: 1px solid var(--paper); font-variant-numeric: tabular-nums; }
+.result .plus { color: var(--good); font-weight: 700; text-align: right; }
+.result .minus { color: var(--red); font-weight: 700; text-align: right; }
 
 /* 통신 로그 */
-.logpanel {
-  position: fixed;
-  right: max(16px, env(safe-area-inset-right, 0px));
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  width: 520px; max-width: calc(100% - 32px);
-  height: 46vh;
-  background: var(--ink);
-  color: #e9e3d8;
-  z-index: 20;
-  display: flex; flex-direction: column;
-  box-shadow: 0 6px 24px rgba(0,0,0,.35);
-}
+.logpanel { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: 540px; max-width: calc(100% - 32px); height: 46vh; background: var(--ink); color: #e9e3d8; z-index: 20; display: flex; flex-direction: column; box-shadow: 0 6px 24px rgba(0,0,0,.45); }
 .logpanel .lh { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #3a3430; gap: 8px; }
 .logpanel .lh b { font-size: 13px; }
 .logpanel .lh small { color: #a99f92; }
@@ -313,24 +256,16 @@ table.rooms tbody tr.off { color: var(--muted); cursor: default; }
 .logbody .out { color: #ffb4a8; }
 .logbody .in { color: #b9e4c6; }
 .logbody .tag { font-weight: 700; margin-right: 6px; }
+.logbody .prop { color: var(--gold); }
 
-@media (max-width: 900px) {
-  .room-body { grid-template-columns: minmax(0, 1fr); }
-  .chat { border-left: 0; border-top: 1px solid var(--paper-dark); }
-  .chatlog { min-height: 140px; max-height: 220px; }
+@media (max-width: 820px) {
+  .lmain { grid-template-columns: minmax(0, 1fr); }
+  .me-box { order: -1; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .me-box .money { flex: 1 1 180px; }
+  .logo { font-size: 32px; }
+  .room-head .rule { display: none; }
 }
-@media (max-width: 560px) {
-  .logo { font-size: 28px; }
-  .board { padding: 12px; }
-  .cardbtn { width: 48px; }
-  .hand .cardbtn { flex-basis: 60px; }
-  .tablearea { gap: 10px; padding: 8px; }
-  .deck .pile img { width: 40px; }
-  .deck .pile img + img { margin-left: -37px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cardbtn { transition: none; }
-}
+@media (prefers-reduced-motion: reduce) { .cardbtn { transition: none; } .cardbtn.fresh { animation: none; } }
 </style>
 
 </head>
@@ -341,114 +276,135 @@ table.rooms tbody tr.off { color: var(--muted); cursor: default; }
 </div>
 
 <!-- ======================= 로비 ======================= -->
-<section class="screen" id="lobby">
-  <header class="lobby-head">
-    <div class="logo">갈래<span class="q">?</span> 말래<span class="q">?</span></div>
-    <div class="sub">2인 맞고 · 로비</div>
-    <div class="band"></div>
-  </header>
+<section class="lobby" id="lobby">
+  <div class="lframe">
+    <header class="ltop">
+      <div>
+        <div class="logo">갈래<span class="q">?</span> 말래<span class="q">?</span></div>
+        <div class="logo-sub">2인 맞고 · 시작 머니 1,000,000원 · 점당 10,000원</div>
+      </div>
+      <button class="btn teal make-btn" type="button" id="makeBtn" disabled>＋ 방 만들기</button>
+    </header>
 
-  <div class="lobby-body">
-    <section class="panel" aria-labelledby="connTitle">
-      <h2 id="connTitle">서버 접속</h2>
-      <form class="connect-row" id="connectForm">
-        <div class="field"><label for="host">서버 주소</label><input type="text" id="host" value="시연용 가상 서버" readonly size="14"></div>
-        <div class="field"><label for="port">포트</label><input type="text" id="port" value="5000" readonly size="5"></div>
-        <div class="field"><label for="nick">닉네임</label><input type="text" id="nick" maxlength="20" size="12" placeholder="예: 우진" autocomplete="off"></div>
-        <button class="btn primary" type="submit" id="connectBtn">접속</button>
-      </form>
-      <p class="hint">닉네임은 1~12자, 줄바꿈 없이 입력합니다.</p>
-      <p class="welcome" id="welcome"></p>
-    </section>
-
-    <section class="panel" aria-labelledby="roomsTitle">
-      <div class="rooms-head">
-        <h2 id="roomsTitle">방 목록</h2>
-        <div class="actions">
-          <button class="btn" type="button" id="refreshBtn" disabled>새로고침</button>
-          <button class="btn" type="button" id="createBtn" disabled>방 만들기</button>
-          <button class="btn primary" type="button" id="joinBtn" disabled>입장</button>
+    <div class="lmain">
+      <section class="rlist" aria-labelledby="rlTitle">
+        <div class="rl-head">
+          <h2 id="rlTitle">방 목록<span class="meta num" id="rlMeta"></span></h2>
+          <div class="rl-tools">
+            <div class="tabs" role="group" aria-label="방 상태 필터">
+              <button class="tab" type="button" data-f="all" aria-pressed="true">전체</button>
+              <button class="tab" type="button" data-f="wait" aria-pressed="false">대기 중</button>
+            </div>
+            <button class="btn" type="button" id="refreshBtn" disabled>새로고침</button>
+          </div>
         </div>
-      </div>
-      <form class="create-form" id="createForm" hidden>
-        <label for="roomTitle" class="qlabel">방 제목 (1~30자)</label>
-        <input type="text" id="roomTitle" maxlength="40" autocomplete="off">
-        <button class="btn primary" type="submit">만들기</button>
-        <button class="btn" type="button" id="createCancel">취소</button>
-      </form>
-      <div class="table-wrap">
-        <table class="rooms">
-          <thead><tr><th>방 제목</th><th class="c">인원</th><th class="c">상태</th></tr></thead>
-          <tbody id="roomRows"></tbody>
-        </table>
-        <div class="empty" id="roomEmpty">접속하면 방 목록이 보입니다.</div>
-      </div>
-    </section>
+        <div class="rows-wrap">
+          <div class="rows">
+            <div class="rhead"><span class="c">번호</span><span>방 이름</span><span class="c">인원</span><span class="c">상태</span><span></span></div>
+            <div id="roomRows"></div>
+            <div class="rempty" id="roomEmpty"><b>접속하면 방 목록이 보입니다</b>닉네임을 입력하고 입장하세요.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="me-box" aria-label="내 정보">
+        <div class="me-head">
+          <div class="avatar" id="meAvatar">?</div>
+          <div><div class="lbl">닉네임</div><div class="nm" id="meNick">접속 전</div></div>
+        </div>
+        <div class="money">
+          <div class="lbl">보유 머니</div>
+          <div class="val num" id="meMoney">-</div>
+          <div class="rule">잃은 머니는 다음 판으로 이어집니다.</div>
+        </div>
+      </aside>
+    </div>
+    <div class="lstatus" id="lobbyStatus"></div>
   </div>
-  <div class="statusbar" id="lobbyStatus">닉네임을 입력하고 접속하세요.</div>
 </section>
 
 <!-- ======================= 게임 방 ======================= -->
-<section class="screen" id="room" hidden>
-  <header class="room-head">
-    <div class="t"><h1 id="roomTitleText">게임 방</h1><span class="pill" id="roomPill">대기 중</span></div>
-    <button class="btn dark" type="button" id="leaveBtn">나가기</button>
-  </header>
-  <div class="room-body">
-    <main class="board">
-      <div class="wait-view" id="waitView">
-        <h2>상대를 기다리고 있습니다</h2>
-        <p class="hint2" id="waitHint"></p>
-        <div class="seats" id="seats"></div>
-        <button class="btn primary ready-btn" type="button" id="readyBtn">준비</button>
-      </div>
+<section class="room" id="room" hidden>
+  <div class="stage-wrap">
+    <div class="room-head">
+      <div style="display:flex;align-items:baseline;min-width:0"><h1 id="roomTitle">게임 방</h1><span class="pill" id="roomPill">대기 중</span></div>
+      <span class="rule">점당 10,000원 · 숫자 키 1~0으로 패를 낼 수 있습니다</span>
+    </div>
+    <div class="stage-box" id="stageBox">
+      <div class="stage" id="stage">
+        <!-- 왼쪽: 담요 -->
+        <div class="felt">
+          <div class="band" id="oppBand">
+            <div class="groups" id="oppGroups"></div>
+            <div class="backs" id="oppBacks"></div>
+          </div>
+          <div class="tablearea" id="tableArea">
+            <div class="deckcell"><div class="pile" id="pile"></div><div class="deckcnt num" id="deckCnt">덱 0장</div></div>
+          </div>
+          <div class="band bottom"><div class="groups" id="myGroups"></div></div>
 
-      <div class="game-view" id="gameView" hidden>
-        <div class="parea" id="oppArea">
-          <div class="pline"><span class="name" data-k="name"></span><span class="turn-badge" data-k="badge">차례</span><span class="info" data-k="info"></span></div>
-          <div class="prow"><div class="backs" data-k="backs"></div><div class="groups" data-k="groups"></div></div>
-        </div>
-        <div class="tablearea">
-          <div class="deck"><div class="pile" id="deckPile"></div><div class="cnt" id="deckCnt">덱 0장</div></div>
-          <div class="tablecards"><span class="gl">바닥패</span><div class="cards" id="tableCards"></div></div>
-        </div>
-        <div class="turnbar">
-          <span class="turnlabel" id="turnLabel"></span>
-          <button class="btn primary gs" type="button" id="goBtn" hidden>고</button>
-          <button class="btn gs" type="button" id="stopBtn" hidden>스톱</button>
-        </div>
-        <div class="parea" id="myArea">
-          <div class="pline"><span class="name" data-k="name"></span><span class="turn-badge" data-k="badge">차례</span><span class="info" data-k="info"></span></div>
-          <div class="prow"><div class="groups" data-k="groups"></div></div>
-        </div>
-        <div class="hand" id="hand"></div>
-      </div>
-    </main>
+          <div class="toast" id="toast" hidden></div>
+          <div class="prompt" id="goPrompt" hidden>
+            <div class="t" id="goTitle">3점 났습니다!</div>
+            <div class="s">고를 하면 판을 이어가고, 스톱을 하면 지금 점수로 끝냅니다.</div>
+            <div class="row"><button class="btn red" type="button" id="goBtn">고</button><button class="btn" type="button" id="stopBtn">스톱</button></div>
+          </div>
 
-    <aside class="chat" aria-labelledby="chatTitle">
-      <h2 id="chatTitle">채팅</h2>
-      <div class="chatlog" id="chatLog" aria-live="polite"></div>
-      <span class="qlabel">빠른 채팅</span>
-      <div class="quick" id="quick"></div>
-      <form class="chatin" id="chatForm">
-        <label for="chatInput" hidden>채팅 입력</label>
-        <input type="text" id="chatInput" autocomplete="off" placeholder="메시지 입력">
-        <button class="btn primary" type="submit">전송</button>
-      </form>
-    </aside>
+          <div class="waitview" id="waitView">
+            <h2>상대를 기다리고 있습니다</h2>
+            <p id="waitHint"></p>
+            <div class="seats" id="seats"></div>
+            <button class="btn red readybtn" type="button" id="readyBtn">준비</button>
+          </div>
+        </div>
+
+        <!-- 오른쪽: 정보 패널 -->
+        <div class="side">
+          <div class="pbox" id="oppBox">
+            <div class="avatar opp" data-k="av">?</div>
+            <div class="who"><div class="nm" data-k="nm">빈 자리</div><div class="mn num" data-k="mn">-</div></div>
+            <div class="score"><b class="num" data-k="sc">0</b><span>점</span></div>
+            <div class="sub" data-k="sub"></div>
+          </div>
+          <div class="status"><div class="t" id="turnText">게임 대기 중</div><div class="s" id="turnSub">두 명이 모두 준비하면 시작합니다</div></div>
+          <div class="handbox" id="hand" aria-label="내 손패"></div>
+          <div class="pbox" id="myBox">
+            <div class="avatar" data-k="av">?</div>
+            <div class="who"><div class="nm" data-k="nm">나</div><div class="mn num" data-k="mn">-</div></div>
+            <div class="score"><b class="num" data-k="sc">0</b><span>점</span></div>
+            <div class="sub" data-k="sub"></div>
+          </div>
+          <div class="actions">
+            <button class="btn ghost" type="button" id="quickBtn">빠른 채팅</button>
+            <button class="btn ghost" type="button" id="chatBtn">채팅</button>
+            <button class="btn ghost" type="button" id="leaveBtn">나가기</button>
+          </div>
+
+          <div class="chatpop" id="chatPop" hidden>
+            <div class="hd"><span id="chatPopTitle">채팅</span><button type="button" id="chatClose" aria-label="닫기">×</button></div>
+            <div class="chatlog" id="chatLog" aria-live="polite"></div>
+            <div class="quick" id="quick"></div>
+            <form class="chatin" id="chatForm">
+              <input type="text" id="chatInput" autocomplete="off" placeholder="메시지 (200자까지)" aria-label="채팅 입력">
+              <button class="btn red" type="submit">전송</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <div class="modal-bg" id="modal" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <h3 id="modalTitle"></h3>
-    <p class="body" id="modalBody"></p>
+    <div id="modalContent"></div>
     <div class="row" id="modalRow"></div>
   </div>
 </div>
 
 <section class="logpanel" id="logPanel" hidden aria-label="통신 로그">
-  <div class="lh"><div><b>통신 로그</b> <small>docs/README.md 형식의 JSON</small></div><button class="btn" type="button" id="logClear">지우기</button></div>
+  <div class="lh"><div><b>통신 로그</b> <small>docs/README.md 형식 · <span class="prop" style="color:var(--gold)">노란 필드</span>는 머니 표시용 제안 필드</small></div><button class="btn" type="button" id="logClear">지우기</button></div>
   <div class="logbody" id="logBody"></div>
 </section>
 
@@ -461,10 +417,13 @@ const BACK = CARD_DATA.back;
 const TYPE_NAME = { GWANG: "광", ANIMAL: "열끗", RIBBON: "띠", PI: "피", BONUS: "보너스" };
 const GROUPS = ["GWANG", "ANIMAL", "RIBBON", "PI"];
 const QUICK = ["고!", "스톱!", "좋아요!", "빨리 좀 해요~", "아깝다!", "한 판 더?"];
+const START_MONEY = 1000000, POINT_MONEY = 10000;
+const PROPOSED = ["money", "moneyDelta"];       // 프로토콜에 아직 없는 제안 필드
 const cardName = id => { const c = CARDS[id]; return c.t === "BONUS" ? "보너스(" + c.v + ")" : c.m + "월 " + TYPE_NAME[c.t]; };
+const won = n => n.toLocaleString("ko-KR") + "원";
 const $ = id => document.getElementById(id);
 
-/* ===== 통신 로그 ===== */
+/* ===== 통신 로그 (제안 필드는 노란색) ===== */
 function logMsg(dir, msg) {
   const body = $("logBody");
   const div = document.createElement("div");
@@ -473,45 +432,51 @@ function logMsg(dir, msg) {
   tag.className = "tag";
   tag.textContent = "[" + dir + "]";
   div.appendChild(tag);
-  div.appendChild(document.createTextNode(JSON.stringify(msg)));
+  const json = JSON.stringify(msg);
+  const re = new RegExp('"(' + PROPOSED.join("|") + ')":-?\\d+', "g");
+  let last = 0, m;
+  while ((m = re.exec(json))) {
+    div.appendChild(document.createTextNode(json.slice(last, m.index)));
+    const s = document.createElement("span"); s.className = "prop"; s.textContent = m[0];
+    div.appendChild(s);
+    last = m.index + m[0].length;
+  }
+  div.appendChild(document.createTextNode(json.slice(last)));
   body.appendChild(div);
   while (body.children.length > 300) body.removeChild(body.firstChild);
   body.scrollTop = body.scrollHeight;
 }
 
 /* =====================================================================
-   가상 서버: 실제 서버 대신 브라우저 안에서 프로토콜 메시지를 주고받는다.
-   게임 규칙은 Swing 테스트 서버(MockServer)와 같은 간이 규칙.
+   가상 서버 — 실제 서버 대신 브라우저 안에서 프로토콜 메시지를 주고받는다.
+   게임 규칙은 화면 확인용 간이 규칙. 머니 필드(money, moneyDelta)는 제안 필드.
    ===================================================================== */
 const Server = (() => {
-  const BOT = { playerId: "player-bot", nickname: "연습상대" };
-  let me = null;                    // { playerId, nickname }
-  let rooms = [];
-  let roomSeq = 2, gameSeq = 0, choiceSeq = 0, timers = [];
+  let me = null, rooms = [], roomSeq = 0, gameSeq = 0, choiceSeq = 0, timers = [];
+  const bot = (id, nickname) => ({ playerId: id, nickname, money: START_MONEY, bot: true });
 
   function initRooms() {
+    roomSeq = 0;
+    const mk = (title, players, playing) => ({ roomId: "room-" + (++roomSeq), title, players, game: playing ? { fake: true } : null });
     rooms = [
-      { roomId: "room-1", title: "초보만 오세요", players: [{ ...BOT, ready: true }], game: null, fake: false },
-      { roomId: "room-2", title: "한 판 빨리 끝내요", players: [{ playerId: "p-x1", nickname: "지나가던고수", ready: true }, { playerId: "p-x2", nickname: "광박주의", ready: true }], game: {}, fake: true },
+      mk("초보만 오세요", [{ ...bot("bot-1", "연습상대"), ready: true }], false),
+      mk("한 판 빨리 끝내요", [{ playerId: "x-1", nickname: "지나가던고수", ready: true }, { playerId: "x-2", nickname: "광박주의", ready: true }], true),
+      mk("고 세 번이면 박수", [{ ...bot("bot-2", "타짜지망생"), ready: true }], false),
+      mk("점심 내기 한 판", [{ playerId: "x-3", nickname: "피박만은", ready: true }, { playerId: "x-4", nickname: "오늘운좋음", ready: true }], true),
     ];
   }
   initRooms();
 
   const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); };
-  const toClient = (msg) => later(() => { logMsg("수신", msg); Client.onMessage(msg); }, 90);
+  const toClient = msg => later(() => { logMsg("수신", msg); Client.onMessage(msg); }, 90);
   const ack = (rid, type, extra) => toClient({ type: "ACK", requestId: rid, payload: Object.assign({ requestType: type }, extra || {}) });
   const error = (rid, code, message) => toClient({ type: "ERROR", requestId: rid, payload: { code, message } });
   const myRoom = () => rooms.find(r => r.players.some(p => me && p.playerId === me.playerId));
+  const chatFrom = (p, text) => ({ type: "CHAT_MESSAGE", payload: { playerId: p.playerId, nickname: p.nickname, message: text } });
 
-  function roomList() {
-    return { type: "ROOM_LIST", payload: { rooms: rooms.map(r => ({ roomId: r.roomId, title: r.title, playerCount: r.players.length, maxPlayers: 2, status: r.game ? "PLAYING" : "WAITING" })) } };
-  }
-  function roomState(r) {
-    return { type: "ROOM_STATE", payload: { roomId: r.roomId, title: r.title, maxPlayers: 2, status: r.game ? "PLAYING" : "WAITING", players: r.players.map(p => ({ playerId: p.playerId, nickname: p.nickname, ready: p.ready })) } };
-  }
-  function chatFrom(p, text) {
-    return { type: "CHAT_MESSAGE", payload: { playerId: p.playerId, nickname: p.nickname, message: text } };
-  }
+  const roomList = () => ({ type: "ROOM_LIST", payload: { rooms: rooms.map(r => ({ roomId: r.roomId, title: r.title, playerCount: r.players.length, maxPlayers: 2, status: r.game ? "PLAYING" : "WAITING" })) } });
+  const roomState = r => ({ type: "ROOM_STATE", payload: { roomId: r.roomId, title: r.title, maxPlayers: 2, status: r.game ? "PLAYING" : "WAITING",
+    players: r.players.map(p => ({ playerId: p.playerId, nickname: p.nickname, ready: p.ready, money: p.money })) } });
 
   function handle(msg) {
     const { type, requestId: rid, payload: p } = msg;
@@ -519,9 +484,9 @@ const Server = (() => {
     const r = myRoom();
     switch (type) {
       case "JOIN":
-        if (p.nickname === BOT.nickname) return error(rid, "NICKNAME_TAKEN", "이미 사용 중인 닉네임입니다.");
-        me = { playerId: "player-" + (Math.floor(Math.random() * 90) + 10), nickname: p.nickname };
-        return ack(rid, "JOIN", { playerId: me.playerId });
+        if (["연습상대", "타짜지망생"].includes(p.nickname)) return error(rid, "NICKNAME_TAKEN", "이미 사용 중인 닉네임입니다.");
+        me = { playerId: "player-" + (Math.floor(Math.random() * 90) + 10), nickname: p.nickname, money: START_MONEY };
+        return ack(rid, "JOIN", { playerId: me.playerId, money: me.money });
       case "LIST_ROOMS":
         ack(rid, type);
         return toClient(roomList());
@@ -531,11 +496,12 @@ const Server = (() => {
         rooms.push(room);
         ack(rid, type, { roomId: room.roomId });
         toClient(roomState(room));
-        later(() => {          // 잠시 뒤 연습 봇이 들어온다
+        later(() => {
           if (!rooms.includes(room) || room.players.length >= 2) return;
-          room.players.push({ ...BOT, ready: false });
+          const b = { ...bot("bot-" + room.roomId, "연습상대"), ready: false };
+          room.players.push(b);
           toClient(roomState(room));
-          later(() => toClient(chatFrom(BOT, "안녕하세요! 한 판 해요")), 500);
+          later(() => toClient(chatFrom(b, "안녕하세요! 한 판 해요")), 600);
         }, 1600);
         return;
       }
@@ -547,7 +513,8 @@ const Server = (() => {
         room.players.push({ ...me, ready: false });
         ack(rid, type, { roomId: room.roomId });
         toClient(roomState(room));
-        later(() => toClient(chatFrom(BOT, "어서 오세요! 준비되면 시작해요")), 700);
+        const b = room.players.find(x => x.bot);
+        if (b) later(() => toClient(chatFrom(b, "어서 오세요! 준비되면 시작해요")), 700);
         return;
       }
       case "READY": {
@@ -556,17 +523,18 @@ const Server = (() => {
         r.players.find(x => x.playerId === me.playerId).ready = p.ready;
         ack(rid, type);
         toClient(roomState(r));
-        const bot = r.players.find(x => x.playerId === BOT.playerId);
-        if (p.ready && bot && !bot.ready) later(() => { bot.ready = true; toClient(roomState(r)); tryStart(r); }, 900);
+        const b = r.players.find(x => x.bot);
+        if (p.ready && b && !b.ready) later(() => { b.ready = true; toClient(roomState(r)); tryStart(r); }, 900);
         tryStart(r);
         return;
       }
       case "LEAVE_ROOM": {
         if (!r) return error(rid, "NOT_IN_ROOM", "방에 참가하세요.");
         r.players = r.players.filter(x => x.playerId !== me.playerId);
-        if (r.game) r.game = null;          // 남은 봇 쪽에는 PLAYER_LEFT로 종료 (시연에서는 생략)
-        if (r.roomId !== "room-1") rooms = rooms.filter(x => x !== r);
-        else r.players.forEach(x => { x.ready = true; });
+        r.game = null;
+        const b = r.players.find(x => x.bot);
+        if (b && ["room-1", "room-3"].includes(r.roomId)) b.ready = true;
+        else rooms = rooms.filter(x => x !== r);
         return ack(rid, type);
       }
       case "CHAT": {
@@ -575,7 +543,9 @@ const Server = (() => {
         if (!text || [...text].length > 200) return error(rid, "INVALID_MESSAGE", "채팅은 1~200자입니다.");
         ack(rid, type);
         toClient(chatFrom(me, text));
-        botReplyChat(r, text);
+        const b = r.players.find(x => x.bot);
+        const replies = { "고!": "헉, 고라니...", "스톱!": "휴, 다행이다", "빨리 좀 해요~": "생각 중이에요!", "아깝다!": "운이 좋았네요", "한 판 더?": "좋아요, 준비할게요", "좋아요!": "^^" };
+        if (b && replies[text] && Math.random() < 0.85) later(() => toClient(chatFrom(b, replies[text])), 900);
         return;
       }
       case "PLAY_CARD":      return playCard(r, me.playerId, rid, p.cardId);
@@ -585,13 +555,6 @@ const Server = (() => {
     }
   }
 
-  function botReplyChat(r, text) {
-    if (!r.players.some(x => x.playerId === BOT.playerId)) return;
-    const replies = { "고!": "헉 고라니...", "스톱!": "다행이다", "빨리 좀 해요~": "생각 중이에요!", "아깝다!": "ㅎㅎ 운이 좋았네요", "한 판 더?": "좋아요, 준비할게요", "좋아요!": "^^" };
-    const reply = replies[text];
-    if (reply && Math.random() < 0.8) later(() => toClient(chatFrom(BOT, reply)), 900);
-  }
-
   /* ---------- 게임 (간이 규칙) ---------- */
   function tryStart(r) {
     if (r.game || r.players.length < 2 || !r.players.every(x => x.ready)) return;
@@ -599,7 +562,7 @@ const Server = (() => {
     for (let i = 1; i <= 48; i++) deck.push(i);
     for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
     const g = { gameId: "game-" + (++gameSeq), revision: 0, phase: "WAIT_PLAY", hands: {}, captured: {}, go: {}, lastGo: {}, table: [], deck: [], pending: null, pendingFor: null, played: 0 };
-    r.players.forEach(pl => { g.hands[pl.playerId] = deck.splice(0, 10); g.captured[pl.playerId] = []; g.go[pl.playerId] = 0; g.lastGo[pl.playerId] = 0; });
+    r.players.forEach(pl => { g.hands[pl.playerId] = deck.splice(0, 10).sort((a, b) => a - b); g.captured[pl.playerId] = []; g.go[pl.playerId] = 0; g.lastGo[pl.playerId] = 0; });
     g.table = deck.splice(0, 8);
     g.deck = deck;
     g.current = r.players[0].playerId;
@@ -608,7 +571,6 @@ const Server = (() => {
     toClient(state(r, "GAME_START"));
     botTurn(r);
   }
-
   const month = id => CARDS[id].m;
   const sameMonth = (table, card) => table.filter(t => month(t) === month(card));
   function take(g, pid, card, matched) {
@@ -633,20 +595,18 @@ const Server = (() => {
     return { type, payload: {
       gameId: g.gameId, revision: g.revision, phase: g.phase, currentPlayerId: g.current,
       myHand: g.hands[pid].slice(), tableCards: g.table.slice(), deckCount: g.deck.length,
-      players: r.players.map(pl => ({ playerId: pl.playerId, handCount: g.hands[pl.playerId].length, capturedCards: g.captured[pl.playerId].slice(), score: score(g, pl.playerId), goCount: g.go[pl.playerId] })),
+      players: r.players.map(pl => ({ playerId: pl.playerId, handCount: g.hands[pl.playerId].length, capturedCards: g.captured[pl.playerId].slice(), score: score(g, pl.playerId), goCount: g.go[pl.playerId], money: pl.money })),
       pendingChoice: g.pending && g.pendingFor === pid ? JSON.parse(JSON.stringify(g.pending)) : null,
     } };
   }
   const sendState = r => toClient(state(r, "GAME_STATE"));
   const isMe = pid => pid === me.playerId;
-
   function check(r, pid, rid) {
     if (!r) { if (rid) error(rid, "NOT_IN_ROOM", "방에 참가하세요."); return null; }
-    if (!r.game) { if (rid) error(rid, "GAME_NOT_STARTED", "진행 중인 게임이 없습니다."); return null; }
+    if (!r.game || r.game.fake) { if (rid) error(rid, "GAME_NOT_STARTED", "진행 중인 게임이 없습니다."); return null; }
     if (r.game.current !== pid) { if (rid) error(rid, "NOT_YOUR_TURN", "자신의 차례가 아닙니다."); return null; }
     return r.game;
   }
-
   function playCard(r, pid, rid, card) {
     const g = check(r, pid, rid);
     if (!g) return;
@@ -659,6 +619,7 @@ const Server = (() => {
     if (m.length === 2) {
       g.phase = "WAIT_CAPTURE";
       g.played = card;
+      g.table.push(card);                      // 고르는 동안 낸 패를 바닥에 보여준다
       g.pending = { gameId: g.gameId, choiceId: "choice-" + (++choiceSeq), kind: "CAPTURE", cardIds: m };
       g.pendingFor = pid;
       sendState(r);
@@ -669,7 +630,6 @@ const Server = (() => {
     take(g, pid, card, m);
     afterPlay(r, pid);
   }
-
   function selectCapture(r, pid, rid, p) {
     const g = check(r, pid, rid);
     if (!g) return;
@@ -677,10 +637,10 @@ const Server = (() => {
       return rid && error(rid, "INVALID_SELECTION", "만료된 선택이거나 후보에 없는 패입니다.");
     if (rid) ack(rid, "SELECT_CAPTURE");
     g.pending = null; g.pendingFor = null; g.phase = "WAIT_PLAY";
+    g.table = g.table.filter(t => t !== g.played);
     take(g, pid, g.played, [p.cardId]);
     afterPlay(r, pid);
   }
-
   function decide(r, pid, rid, p) {
     const g = check(r, pid, rid);
     if (!g) return;
@@ -688,15 +648,14 @@ const Server = (() => {
       return rid && error(rid, "INVALID_SELECTION", "만료된 선택입니다.");
     if (rid) ack(rid, "DECIDE");
     g.pending = null; g.pendingFor = null;
-    const bot = r.players.find(x => !isMe(x.playerId));
     if (p.decision === "STOP") return endGame(r, "STOP", pid);
     g.go[pid]++;
     g.lastGo[pid] = score(g, pid);
-    if (!isMe(pid)) toClient(chatFrom(bot, g.go[pid] + "고!"));
+    const pl = r.players.find(x => x.playerId === pid);
+    if (pl.bot) toClient(chatFrom(pl, g.go[pid] + "고!"));
     g.phase = "WAIT_PLAY";
     nextTurn(r);
   }
-
   function afterPlay(r, pid) {
     const g = r.game;
     if (g.deck.length) {
@@ -711,12 +670,11 @@ const Server = (() => {
       g.pendingFor = pid;
       sendState(r);
       if (isMe(pid)) toClient({ type: "CHOICE_REQUIRED", payload: JSON.parse(JSON.stringify(g.pending)) });
-      else later(() => decide(r, pid, null, { choiceId: g.pending.choiceId, decision: (g.go[pid] === 0 && s < 5) ? "GO" : "STOP" }), 1000);
+      else later(() => decide(r, pid, null, { choiceId: g.pending.choiceId, decision: (g.go[pid] === 0 && s < 5) ? "GO" : "STOP" }), 1100);
       return;
     }
     nextTurn(r);
   }
-
   function nextTurn(r) {
     const g = r.game;
     if (r.players.every(pl => g.hands[pl.playerId].length === 0)) {
@@ -729,7 +687,6 @@ const Server = (() => {
     sendState(r);
     botTurn(r);
   }
-
   function botTurn(r) {
     const g = r.game;
     if (!g || isMe(g.current)) return;
@@ -741,37 +698,47 @@ const Server = (() => {
       playCard(r, pid, null, pick);
     }, 1100);
   }
-
   function endGame(r, reason, winner) {
     const g = r.game;
     g.phase = "FINISHED"; g.current = null; g.pending = null;
+    // 머니 정산: 승자 점수 × 10,000원 (진 쪽 보유 머니까지)
+    const deltas = {};
+    r.players.forEach(pl => { deltas[pl.playerId] = 0; });
+    if (winner) {
+      const loser = r.players.find(pl => pl.playerId !== winner);
+      const amount = Math.min(score(g, winner) * POINT_MONEY, loser.money);
+      deltas[winner] = amount; deltas[loser.playerId] = -amount;
+    }
+    r.players.forEach(pl => { pl.money += deltas[pl.playerId]; if (isMe(pl.playerId)) me.money = pl.money; });
     sendState(r);
     toClient({ type: "GAME_OVER", payload: { gameId: g.gameId, reason, winnerId: winner,
-      results: r.players.map(pl => ({ playerId: pl.playerId, score: score(g, pl.playerId), goCount: g.go[pl.playerId] })) } });
+      results: r.players.map(pl => ({ playerId: pl.playerId, score: score(g, pl.playerId), goCount: g.go[pl.playerId], moneyDelta: deltas[pl.playerId], money: pl.money })) } });
     r.game = null;
-    r.players.forEach(pl => { pl.ready = false; });
+    r.players.forEach(pl => {
+      pl.ready = false;
+      if (pl.money <= 0) {                       // 시연판: 파산하면 시작 머니로 다시 채움
+        pl.money = START_MONEY;
+        if (isMe(pl.playerId)) me.money = START_MONEY;
+        later(() => toClient(chatFrom(pl, "파산해서 시작 머니로 다시 충전했어요")), 400);
+      }
+    });
     toClient(roomState(r));
   }
-
-  function reset() {
-    timers.forEach(clearTimeout);
-    timers = [];
-    me = null; roomSeq = 2; initRooms();
-  }
-
+  function reset() { timers.forEach(clearTimeout); timers = []; me = null; initRooms(); }
   return { handle, reset };
 })();
 
 /* =====================================================================
-   클라이언트: Swing 클라이언트(MainFrame / LobbyPanel / GameRoomPanel)와 같은 흐름
+   클라이언트 — 서버 메시지만 보고 화면을 그린다 (Swing 클라이언트와 같은 흐름)
    ===================================================================== */
 const Client = (() => {
   let reqSeq = 0;
   const reqTypes = {};
-  let myId = null, myNick = "", pendingTitle = null, selectedRoom = null;
-  let rooms = [];
-  let room = { nicknames: {}, ready: {}, order: [], status: "WAITING", max: 2, title: "" };
+  let myId = null, myNick = "", myMoney = null, rooms = [], filter = "all", pendingTitle = null;
+  let room = null;
   let game = null, pending = null, handledChoice = null, waiting = false;
+  let slotOf = {}, prevTable = [];
+  let chatMode = "chat";
 
   function send(type, payload) {
     const msg = { type, requestId: "req-" + (++reqSeq), payload: payload || {} };
@@ -779,18 +746,8 @@ const Client = (() => {
     logMsg("송신", msg);
     setTimeout(() => Server.handle(msg), 90);
   }
-
-  function show(name) {
-    $("lobby").hidden = name !== "lobby";
-    $("room").hidden = name !== "room";
-  }
-
-  function lobbyStatus(text, err) {
-    const s = $("lobbyStatus");
-    s.textContent = text;
-    s.classList.toggle("err", !!err);
-  }
-
+  function show(name) { $("lobby").hidden = name !== "lobby"; $("room").hidden = name !== "room"; if (name === "room") fitStage(); }
+  function lobbyStatus(text, err) { const s = $("lobbyStatus"); s.textContent = text || ""; s.classList.toggle("err", !!err); }
   function validate(text, max, name) {
     const len = [...text].length;
     if (len < 1) return name + "을(를) 입력하세요.";
@@ -798,282 +755,354 @@ const Client = (() => {
     if (/[\u0000-\u001f\u007f]/.test(text)) return name + "에 줄바꿈이나 제어 문자를 쓸 수 없습니다.";
     return null;
   }
+  const initial = s => (s ? [...s][0] : "?");
 
   /* ---------------- 로비 ---------------- */
-  function setJoined(joined) {
-    $("nick").readOnly = joined;
-    $("connectBtn").disabled = joined;
-    $("connectBtn").textContent = joined ? "접속됨" : "접속";
-    $("welcome").textContent = joined ? myNick + " 님, 환영합니다. 방을 고르거나 새로 만드세요." : "";
-    $("refreshBtn").disabled = !joined;
-    $("createBtn").disabled = !joined;
-    if (!joined) { rooms = []; renderRooms(); }
-    updateJoinBtn();
+  function renderMe() {
+    $("meAvatar").textContent = myId ? initial(myNick) : "?";
+    $("meNick").textContent = myId ? myNick : "접속 전";
+    $("meMoney").textContent = myMoney == null ? "-" : won(myMoney);
+    $("makeBtn").disabled = !myId;
+    $("refreshBtn").disabled = !myId;
   }
-
   function renderRooms() {
-    const tb = $("roomRows");
-    tb.textContent = "";
-    rooms.forEach(r => {
-      const tr = document.createElement("tr");
-      const playing = r.status === "PLAYING";
-      const joinable = !playing && r.playerCount < r.maxPlayers;
-      if (!joinable) tr.classList.add("off");
-      if (r.roomId === selectedRoom) tr.classList.add("sel");
-      const td1 = document.createElement("td"); td1.textContent = r.title;
-      const td2 = document.createElement("td"); td2.className = "c"; td2.textContent = r.playerCount + " / " + r.maxPlayers;
-      const td3 = document.createElement("td"); td3.className = "c";
-      const st = document.createElement("span"); st.className = "st " + (playing ? "play" : "wait"); st.textContent = playing ? "게임 중" : "대기 중";
-      td3.appendChild(st);
-      tr.append(td1, td2, td3);
-      tr.addEventListener("click", () => { selectedRoom = r.roomId; renderRooms(); });
-      tr.addEventListener("dblclick", () => { selectedRoom = r.roomId; joinSelected(); });
-      tb.appendChild(tr);
+    const box = $("roomRows");
+    box.textContent = "";
+    const list = rooms.filter(r => filter === "all" || r.status === "WAITING");
+    list.forEach(r => {
+      const playing = r.status === "PLAYING", full = r.playerCount >= r.maxPlayers;
+      const row = document.createElement("div");
+      row.className = "rrow" + (playing || full ? " full" : "");
+      const no = document.createElement("span"); no.className = "no c num"; no.textContent = String(rooms.indexOf(r) + 1).padStart(2, "0");
+      const t = document.createElement("span"); t.className = "title"; t.textContent = r.title; t.title = r.title;
+      const cnt = document.createElement("span"); cnt.className = "cnt c num"; cnt.textContent = r.playerCount + " / " + r.maxPlayers;
+      const st = document.createElement("span"); st.className = "c";
+      const b = document.createElement("span"); b.className = "badge " + (playing ? "play" : "wait"); b.textContent = playing ? "게임 중" : "대기";
+      st.appendChild(b);
+      const go = document.createElement("button"); go.type = "button"; go.className = "btn red"; go.textContent = "입장";
+      go.disabled = playing || full;
+      go.setAttribute("aria-label", r.title + " 입장");
+      go.addEventListener("click", () => { pendingTitle = r.title; send("JOIN_ROOM", { roomId: r.roomId }); });
+      row.append(no, t, cnt, st, go);
+      box.appendChild(row);
     });
-    $("roomEmpty").hidden = rooms.length > 0;
-    $("roomEmpty").textContent = myId ? "열린 방이 없습니다. 방을 만들어 보세요." : "접속하면 방 목록이 보입니다.";
-    updateJoinBtn();
+    const waitN = rooms.filter(r => r.status === "WAITING").length;
+    $("rlMeta").textContent = myId ? " " + rooms.length + "개 · 대기 " + waitN + "개" : "";
+    const empty = $("roomEmpty");
+    empty.hidden = list.length > 0;
+    empty.innerHTML = "";
+    const bb = document.createElement("b");
+    bb.textContent = !myId ? "접속하면 방 목록이 보입니다" : filter === "wait" ? "들어갈 수 있는 방이 없습니다" : "열린 방이 없습니다";
+    empty.append(bb, document.createTextNode(!myId ? "닉네임을 입력하고 입장하세요." : "＋ 방 만들기로 새 방을 열어 보세요."));
   }
 
-  function updateJoinBtn() {
-    const r = rooms.find(x => x.roomId === selectedRoom);
-    $("joinBtn").disabled = !(myId && r && r.status !== "PLAYING" && r.playerCount < r.maxPlayers);
+  function askNickname() {
+    openModal("닉네임 정하기", (box, err) => {
+      const f = document.createElement("div"); f.className = "field";
+      const l = document.createElement("label"); l.htmlFor = "nickInput"; l.textContent = "닉네임 (1~12자)";
+      const i = document.createElement("input"); i.type = "text"; i.id = "nickInput"; i.maxLength = 20; i.placeholder = "예: 우진"; i.autocomplete = "off";
+      f.append(l, i); box.appendChild(f);
+      return () => {
+        const nick = i.value.trim();
+        const e = validate(nick, 12, "닉네임");
+        if (e) { err(e); return false; }
+        myNick = nick;
+        send("JOIN", { nickname: nick });
+        return true;
+      };
+    }, "입장하기", false);
   }
-
-  function joinSelected() {
-    if ($("joinBtn").disabled) return;
-    pendingTitle = null;
-    send("JOIN_ROOM", { roomId: selectedRoom });
+  function askRoomTitle() {
+    openModal("방 만들기", (box, err) => {
+      const f = document.createElement("div"); f.className = "field";
+      const l = document.createElement("label"); l.htmlFor = "titleInput"; l.textContent = "방 이름 (1~30자)";
+      const i = document.createElement("input"); i.type = "text"; i.id = "titleInput"; i.maxLength = 40; i.value = myNick + "님의 방"; i.autocomplete = "off";
+      f.append(l, i); box.appendChild(f);
+      const n = document.createElement("p"); n.className = "body"; n.style.color = "var(--muted)"; n.style.fontSize = "12px";
+      n.textContent = "2인 방 · 점당 10,000원. 방을 만들면 바로 입장합니다.";
+      box.appendChild(n);
+      setTimeout(() => i.select(), 0);
+      return () => {
+        const title = i.value.trim();
+        const e = validate(title, 30, "방 이름");
+        if (e) { err(e); return false; }
+        pendingTitle = title;
+        send("CREATE_ROOM", { title });
+        return true;
+      };
+    }, "만들기", true);
   }
 
   /* ---------------- 게임 방 ---------------- */
-  function enterRoom(title) {
-    room = { nicknames: {}, ready: {}, order: [], status: "WAITING", max: 2, title: title || "게임 방" };
-    game = null; pending = null; handledChoice = null; waiting = false;
-    $("roomTitleText").textContent = room.title;
+  function enterRoom() {
+    room = { nicknames: {}, ready: {}, money: {}, order: [], status: "WAITING", max: 2, title: pendingTitle || "게임 방" };
+    game = null; pending = null; handledChoice = null; waiting = false; slotOf = {}; prevTable = [];
     $("chatLog").textContent = "";
     sys("방에 입장했습니다.");
-    $("waitView").hidden = false;
-    $("gameView").hidden = true;
+    $("roomTitle").textContent = room.title;
     show("room");
+    renderAll();
   }
+  const name = id => (room && room.nicknames[id]) || id;
 
-  function sys(text) {
-    const d = document.createElement("div");
-    d.className = "sys";
-    d.textContent = "· " + text;
-    appendChat(d);
+  function sys(text) { const d = document.createElement("div"); d.className = "sys"; d.textContent = "· " + text; appendChat(d); toast(text); }
+  function appendChat(node) { const log = $("chatLog"); log.appendChild(node); log.scrollTop = log.scrollHeight; }
+  let toastTimer = null;
+  function toast(text) {
+    const t = $("toast");
+    t.textContent = text; t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, 2200);
   }
-
-  function appendChat(node) {
-    const log = $("chatLog");
-    log.appendChild(node);
-    log.scrollTop = log.scrollHeight;
+  const bubbleTimers = {};
+  function bubble(playerId, text) {
+    const box = playerId === myId ? $("myBox") : $("oppBox");
+    let b = box.querySelector(".bubble");
+    if (!b) { b = document.createElement("div"); b.className = "bubble" + (playerId === myId ? "" : " below"); box.appendChild(b); }
+    b.textContent = text;
+    clearTimeout(bubbleTimers[playerId]);
+    bubbleTimers[playerId] = setTimeout(() => b.remove(), 3000);
   }
-
   function addChat(p) {
     const mine = p.playerId === myId;
     const d = document.createElement("div");
     if (mine) d.className = "me";
-    const n = document.createElement("span");
-    n.className = "nm";
-    n.textContent = p.nickname + (mine ? " (나)" : "");
-    d.appendChild(n);
-    d.appendChild(document.createTextNode(p.message));   // 일반 텍스트로만 표시
+    const n = document.createElement("span"); n.className = "nm"; n.textContent = p.nickname + (mine ? " (나)" : "");
+    d.appendChild(n); d.appendChild(document.createTextNode(p.message));   // 일반 텍스트로만
     appendChat(d);
+    bubble(p.playerId, p.message);
   }
-
-  const name = id => room.nicknames[id] || id;
 
   function setRoomState(p) {
     const before = Object.assign({}, room.nicknames);
     const prevStatus = room.status;
     room.title = p.title; room.max = p.maxPlayers; room.status = p.status;
     room.nicknames = {}; room.ready = {}; room.order = [];
-    p.players.forEach(pl => { room.nicknames[pl.playerId] = pl.nickname; room.ready[pl.playerId] = pl.ready; room.order.push(pl.playerId); });
+    p.players.forEach(pl => { room.nicknames[pl.playerId] = pl.nickname; room.ready[pl.playerId] = pl.ready; room.order.push(pl.playerId); if (pl.money != null) room.money[pl.playerId] = pl.money; });
+    if (room.money[myId] != null) myMoney = room.money[myId];
     if (Object.keys(before).length) {
       room.order.forEach(id => { if (!before[id]) sys(room.nicknames[id] + " 님이 입장했습니다."); });
       Object.keys(before).forEach(id => { if (!room.nicknames[id]) sys(before[id] + " 님이 나갔습니다."); });
     }
-    $("roomTitleText").textContent = room.title;
-    const playing = room.status === "PLAYING";
-    $("roomPill").textContent = playing ? "게임 중" : "대기 중 · " + room.order.length + "/" + room.max;
-    if (!playing) {
-      if (prevStatus === "PLAYING") game = null;
-      pending = null;
-      $("waitView").hidden = false;
-      $("gameView").hidden = true;
-    }
-    renderWaiting();
-    if (game) renderGame();
-  }
-
-  function renderWaiting() {
-    const seats = $("seats");
-    seats.textContent = "";
-    for (let i = 0; i < room.max; i++) {
-      const id = room.order[i];
-      const s = document.createElement("div");
-      const n = document.createElement("div"); n.className = "n";
-      const st = document.createElement("div"); st.className = "s";
-      if (id) {
-        const ready = room.ready[id];
-        s.className = "seat" + (ready ? " ready" : "");
-        n.textContent = room.nicknames[id] + (id === myId ? " (나)" : "");
-        st.textContent = ready ? "준비 완료" : "준비 전";
-      } else {
-        s.className = "seat empty";
-        n.textContent = "빈 자리";
-        st.textContent = "참가자를 기다리는 중";
-      }
-      s.append(n, st);
-      seats.appendChild(s);
-    }
-    const meReady = !!room.ready[myId];
-    const rb = $("readyBtn");
-    rb.textContent = meReady ? "준비 취소" : "준비";
-    rb.classList.toggle("primary", !meReady);
-    $("waitHint").textContent = room.order.length < room.max ? "빈 자리가 있습니다. 상대가 들어오면 함께 준비하세요." : "모두 준비하면 게임이 자동으로 시작됩니다.";
+    if (room.status !== "PLAYING") { if (prevStatus === "PLAYING") game = null; pending = null; }
+    renderAll();
   }
 
   function setGameState(p, start) {
     if (game && !start && p.gameId === game.gameId && p.revision < game.revision) return;
-    if (start) { sys("게임이 시작되었습니다!"); handledChoice = null; }
-    game = p;
-    waiting = false;
+    if (start) { sys("게임이 시작되었습니다!"); handledChoice = null; slotOf = {}; prevTable = []; }
+    game = p; waiting = false;
     pending = p.pendingChoice || null;
-    $("waitView").hidden = true;
-    $("gameView").hidden = false;
-    renderGame();
+    p.players.forEach(pl => { if (pl.money != null) room.money[pl.playerId] = pl.money; });
+    renderAll();
   }
 
-  function cardImg(id, w) {
-    const img = document.createElement("img");
-    if (id === -1) { img.src = BACK; img.alt = "카드 뒷면"; }
-    else { img.src = CARDS[id].img; img.alt = cardName(id); img.title = cardName(id) + " (cardId " + id + ")"; }
-    if (w) img.style.width = w + "px";
-    return img;
+  function img(id, cls) {
+    const i = document.createElement("img");
+    if (id === -1) { i.src = BACK; i.alt = ""; }
+    else { i.src = CARDS[id].img; i.alt = cardName(id); i.title = cardName(id) + " · cardId " + id; }
+    if (cls) i.className = cls;
+    return i;
   }
-
-  function cardBtn(id, opts) {
+  function cardBtn(id, o) {
     const b = document.createElement("button");
-    b.type = "button";
-    b.className = "cardbtn";
-    b.appendChild(cardImg(id));
+    b.type = "button"; b.className = "cardbtn";
+    b.appendChild(img(id));
     b.setAttribute("aria-label", cardName(id));
-    if (opts.play) b.classList.add("play");
-    if (opts.cand) b.classList.add("cand");
-    if (opts.dim) b.classList.add("dim");
-    b.disabled = !(opts.play || opts.cand);
-    if (opts.onClick) b.addEventListener("click", () => opts.onClick(id));
+    ["play", "cand", "dim", "fresh"].forEach(k => { if (o[k]) b.classList.add(k); });
+    b.disabled = !(o.play || o.cand);
+    if (o.onClick) b.addEventListener("click", () => o.onClick(id));
     return b;
   }
 
-  function renderPlayer(areaId, pl, isMe, current) {
-    const area = $(areaId);
-    const q = k => area.querySelector('[data-k="' + k + '"]');
-    q("name").textContent = name(pl.playerId) + (isMe ? " (나)" : "");
-    q("info").textContent = "손패 " + pl.handCount + "장 · 점수 " + pl.score + "점 · " + pl.goCount + "고";
-    q("badge").hidden = pl.playerId !== current;
-    if (!isMe) {
-      const backs = q("backs");
-      backs.textContent = "";
-      for (let i = 0; i < pl.handCount; i++) backs.appendChild(cardImg(-1));
-    }
-    const groups = q("groups");
-    groups.textContent = "";
+  function renderGroups(boxId, captured) {
+    const box = $(boxId);
+    box.textContent = "";
     const by = { GWANG: [], ANIMAL: [], RIBBON: [], PI: [] };
-    pl.capturedCards.forEach(id => { const t = CARDS[id].t === "BONUS" ? "PI" : CARDS[id].t; by[t].push(id); });
+    (captured || []).forEach(id => by[CARDS[id].t === "BONUS" ? "PI" : CARDS[id].t].push(id));
     GROUPS.forEach(t => {
       const g = document.createElement("div"); g.className = "group";
-      const l = document.createElement("span"); l.className = "gl"; l.textContent = TYPE_NAME[t] + " " + by[t].length;
-      const s = document.createElement("div"); s.className = "stack";
-      by[t].forEach(id => s.appendChild(cardImg(id)));
+      const l = document.createElement("span"); l.className = "gl num"; l.textContent = TYPE_NAME[t] + " " + by[t].length;
+      const s = document.createElement("div"); s.className = "stack" + (t === "PI" ? " pi" : "");
+      by[t].forEach(id => s.appendChild(img(id)));
       g.append(l, s);
-      groups.appendChild(g);
+      box.appendChild(g);
     });
   }
 
-  function renderGame() {
-    if (!game) return;
-    const phase = game.phase, current = game.currentPlayerId;
-    const myTurn = current === myId;
-    game.players.forEach(pl => renderPlayer(pl.playerId === myId ? "myArea" : "oppArea", pl, pl.playerId === myId, current));
+  function renderBox(boxId, pid, info, current) {
+    const box = $(boxId);
+    const q = k => box.querySelector('[data-k="' + k + '"]');
+    const has = !!pid;
+    q("av").textContent = has ? initial(name(pid)) : "?";
+    q("av").classList.toggle("empty", !has);
+    q("nm").textContent = has ? name(pid) + (pid === myId ? " (나)" : "") : "빈 자리";
+    q("mn").textContent = has && room.money[pid] != null ? won(room.money[pid]) : has ? "-" : "참가자를 기다리는 중";
+    q("sc").textContent = info ? info.score : 0;
+    const sub = q("sub");
+    sub.textContent = "";
+    const chip = (t, c) => { const s = document.createElement("span"); s.className = "chip" + (c ? " " + c : ""); s.textContent = t; sub.appendChild(s); };
+    if (has && info) {
+      if (pid === current) chip("차례", "turn");
+      chip("손패 " + info.handCount + "장");
+      if (info.goCount) chip(info.goCount + "고", "go");
+    } else if (has) {
+      chip(room.ready[pid] ? "준비 완료" : "준비 전", room.ready[pid] ? "go" : "");
+    }
+    box.classList.toggle("turn", !!(info && pid === current));
+  }
 
-    const deck = game.deckCount;
-    const pile = $("deckPile");
-    pile.textContent = "";
-    for (let i = 0; i < Math.min(deck, 5); i++) pile.appendChild(cardImg(-1));
-    $("deckCnt").textContent = "덱 " + deck + "장";
+  function renderAll() {
+    if (!room) return;
+    $("roomTitle").textContent = room.title;
+    const playing = room.status === "PLAYING" && game;
+    $("roomPill").textContent = room.status === "PLAYING" ? "게임 중" : "대기 중 · " + room.order.length + "/" + room.max;
+    const oppId = room.order.find(id => id !== myId) || null;
+    const infoOf = id => game && game.players.find(pl => pl.playerId === id);
+    const current = game ? game.currentPlayerId : null;
+    renderBox("oppBox", oppId, playing ? infoOf(oppId) : null, current);
+    renderBox("myBox", myId, playing ? infoOf(myId) : null, current);
 
+    // 대기 화면
+    $("waitView").hidden = !!playing;
+    if (!playing) {
+      const seats = $("seats");
+      seats.textContent = "";
+      for (let i = 0; i < room.max; i++) {
+        const id = room.order[i];
+        const s = document.createElement("div");
+        const n = document.createElement("div"); n.className = "n";
+        const st = document.createElement("div"); st.className = "s";
+        if (id) { s.className = "seat" + (room.ready[id] ? " ready" : ""); n.textContent = room.nicknames[id] + (id === myId ? " (나)" : ""); st.textContent = room.ready[id] ? "준비 완료" : "준비 전"; }
+        else { s.className = "seat empty"; n.textContent = "빈 자리"; st.textContent = "참가자를 기다리는 중"; }
+        s.append(n, st); seats.appendChild(s);
+      }
+      const meReady = !!room.ready[myId];
+      $("readyBtn").textContent = meReady ? "준비 취소" : "준비";
+      $("readyBtn").className = "btn readybtn " + (meReady ? "" : "red");
+      $("waitHint").textContent = room.order.length < room.max ? "빈 자리가 있습니다. 상대가 들어오면 함께 준비하세요." : "두 명이 모두 준비하면 게임이 자동으로 시작됩니다.";
+      $("turnText").textContent = "게임 대기 중"; $("turnText").classList.remove("mine");
+      $("turnSub").textContent = room.order.length < room.max ? "상대를 기다리는 중" : "모두 준비하면 시작합니다";
+      $("goPrompt").hidden = true;
+      renderHand([], false);
+      renderGroups("oppGroups", []); renderGroups("myGroups", []);
+      $("oppBacks").textContent = "";
+      renderTable([], null);
+      return;
+    }
+
+    const phase = game.phase, myTurn = current === myId;
     const kind = pending ? pending.kind : null;
     const capture = kind === "CAPTURE" && !waiting;
     const goStop = kind === "GO_STOP" && !waiting;
     const canPlay = myTurn && phase === "WAIT_PLAY" && !pending && !waiting;
 
-    const tbl = $("tableCards");
-    tbl.textContent = "";
-    game.tableCards.forEach(id => {
-      const cand = capture && pending.cardIds.includes(id);
-      tbl.appendChild(cardBtn(id, { cand, dim: capture && !cand, onClick: onTableClick }));
-    });
-    const hand = $("hand");
-    hand.textContent = "";
-    game.myHand.forEach(id => hand.appendChild(cardBtn(id, { play: canPlay, onClick: onHandClick })));
+    const opp = infoOf(oppId), mine = infoOf(myId);
+    renderGroups("oppGroups", opp ? opp.capturedCards : []);
+    renderGroups("myGroups", mine ? mine.capturedCards : []);
+    const backs = $("oppBacks"); backs.textContent = "";
+    for (let i = 0; i < (opp ? opp.handCount : 0); i++) backs.appendChild(img(-1));
+    renderTable(game.tableCards, capture ? pending.cardIds : null);
+    const pile = $("pile"); pile.textContent = "";
+    for (let i = 0; i < Math.min(game.deckCount, 5); i++) { const b = img(-1); b.style.top = (-i * 2) + "px"; b.style.left = (i * 1) + "px"; pile.appendChild(b); }
+    $("deckCnt").textContent = "덱 " + game.deckCount + "장";
+    renderHand(game.myHand, canPlay);
 
-    $("goBtn").hidden = !goStop;
-    $("stopBtn").hidden = !goStop;
+    $("goPrompt").hidden = !goStop;
     if (goStop) {
-      const mine = game.players.find(pl => pl.playerId === myId);
+      $("goTitle").textContent = mine.score + "점 났습니다!";
       $("goBtn").textContent = (mine.goCount + 1) + "고";
     }
-
-    let text;
-    if (phase === "FINISHED") text = "게임이 끝났습니다.";
-    else if (waiting) text = "서버 응답을 기다리는 중...";
-    else if (capture) text = "먹을 바닥패를 고르세요.";
-    else if (goStop) text = "고 또는 스톱을 선택하세요.";
-    else if (canPlay) text = "내 차례입니다. 낼 패를 고르세요.";
-    else if (myTurn) text = "내 차례 진행 중...";
-    else text = (current ? name(current) : "상대") + " 님의 차례입니다.";
-    const tl = $("turnLabel");
-    tl.textContent = text;
-    tl.classList.toggle("mine", canPlay || capture || goStop);
+    let t, s = "";
+    if (phase === "FINISHED") t = "게임 종료";
+    else if (waiting) t = "서버 응답을 기다리는 중...";
+    else if (capture) { t = "먹을 패를 고르세요"; s = "노란 테두리 패 중 하나를 누르세요"; }
+    else if (goStop) { t = "고 또는 스톱"; s = "판 가운데에서 선택하세요"; }
+    else if (canPlay) { t = "내 차례입니다"; s = "손패를 누르거나 숫자 키 1~0"; }
+    else if (myTurn) t = "내 차례 진행 중...";
+    else { t = name(current) + " 님 차례"; s = "상대가 패를 고르고 있습니다"; }
+    $("turnText").textContent = t;
+    $("turnText").classList.toggle("mine", canPlay || capture || goStop);
+    $("turnSub").textContent = s || "점당 10,000원";
   }
 
-  function onHandClick(id) {
-    if (waiting) return;
-    waiting = true;
-    send("PLAY_CARD", { cardId: id });
-    renderGame();
+  /* 바닥패: 같은 월끼리 묶어 덱 주변 칸에 놓는다. 한 번 정해진 월의 칸은 그 판 동안 유지 */
+  const SLOTS = [[1, 1], [2, 1], [3, 1], [5, 1], [6, 1], [7, 1], [1, 2], [2, 2], [3, 2], [5, 2], [6, 2], [7, 2]];
+  function renderTable(cards, candidates) {
+    const area = $("tableArea");
+    area.querySelectorAll(".cluster").forEach(c => c.remove());
+    const byMonth = {};
+    cards.forEach(id => { const m = CARDS[id].m; (byMonth[m] = byMonth[m] || []).push(id); });
+    Object.keys(slotOf).forEach(m => { if (!byMonth[m]) delete slotOf[m]; });
+    const used = new Set(Object.values(slotOf));
+    Object.keys(byMonth).forEach(m => {
+      if (slotOf[m] == null) { const free = SLOTS.findIndex((_, i) => !used.has(i)); slotOf[m] = free; used.add(free); }
+    });
+    Object.keys(byMonth).forEach(m => {
+      const [col, row] = SLOTS[slotOf[m]];
+      const c = document.createElement("div");
+      c.className = "cluster";
+      c.style.gridColumn = col; c.style.gridRow = row;
+      // 먹을 패를 고르는 동안에는 후보가 있는 묶음을 펼쳐서 각 카드를 누르기 쉽게 한다
+      if (candidates && byMonth[m].some(id => candidates.includes(id))) c.classList.add("spread");
+      byMonth[m].forEach(id => {
+        const cand = candidates && candidates.includes(id);
+        c.appendChild(cardBtn(id, { cand, dim: candidates && !cand, fresh: !prevTable.includes(id), onClick: onTableClick }));
+      });
+      area.appendChild(c);
+    });
+    prevTable = cards.slice();
   }
-  function onTableClick(id) {
-    if (!pending || waiting) return;
-    handledChoice = pending.choiceId;
-    waiting = true;
-    send("SELECT_CAPTURE", { choiceId: pending.choiceId, cardId: id });
-    renderGame();
+
+  const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+  function renderHand(hand, canPlay) {
+    const box = $("hand");
+    box.textContent = "";
+    for (let i = 0; i < 10; i++) {
+      const slot = document.createElement("div"); slot.className = "slot";
+      const key = document.createElement("span"); key.className = "key"; key.textContent = KEYS[i];
+      if (hand[i] != null) {
+        const b = cardBtn(hand[i], { play: canPlay, onClick: onHandClick });
+        b.appendChild(key);
+        slot.appendChild(b);
+      } else slot.appendChild(key);
+      box.appendChild(slot);
+    }
   }
-  function onDecide(decision) {
-    if (!pending || waiting) return;
-    handledChoice = pending.choiceId;
-    waiting = true;
-    send("DECIDE", { choiceId: pending.choiceId, decision });
-    renderGame();
-  }
+
+  function onHandClick(id) { if (waiting) return; waiting = true; send("PLAY_CARD", { cardId: id }); renderAll(); }
+  function onTableClick(id) { if (!pending || waiting) return; handledChoice = pending.choiceId; waiting = true; send("SELECT_CAPTURE", { choiceId: pending.choiceId, cardId: id }); renderAll(); }
+  function onDecide(d) { if (!pending || waiting) return; handledChoice = pending.choiceId; waiting = true; send("DECIDE", { choiceId: pending.choiceId, decision: d }); renderAll(); }
 
   function onGameOver(p) {
     pending = null;
-    renderGame();
+    p.results.forEach(r => { if (r.money != null) room.money[r.playerId] = r.money; });
+    const mine = p.results.find(r => r.playerId === myId);
+    if (mine && mine.money != null) myMoney = mine.money;
+    renderAll();
     let head;
     if (!p.winnerId) head = p.reason === "DRAW" ? "나가리(무승부)입니다." : p.reason === "PLAYER_LEFT" ? "상대가 나가서 게임이 취소되었습니다." : "무승부입니다.";
     else head = p.winnerId === myId ? "승리했습니다!" : name(p.winnerId) + " 님이 이겼습니다.";
-    const lines = p.results.map(r => name(r.playerId) + (r.playerId === myId ? " (나)" : "") + "  " + r.score + "점, " + r.goCount + "고");
-    sys("게임 종료 — " + head);
-    modal("게임 결과", head + "\n\n" + lines.join("\n"), [{ label: "확인", primary: true }]);
+    sys("게임 종료 · " + head);
+    openModal("게임 결과", box => {
+      const h = document.createElement("p"); h.className = "body"; h.style.fontWeight = "700"; h.textContent = head;
+      const tbl = document.createElement("table"); tbl.className = "result";
+      p.results.forEach(r => {
+        const tr = document.createElement("tr");
+        const a = document.createElement("td"); a.textContent = name(r.playerId) + (r.playerId === myId ? " (나)" : "");
+        const b = document.createElement("td"); b.textContent = r.score + "점 · " + r.goCount + "고";
+        const c = document.createElement("td");
+        const d = r.moneyDelta || 0;
+        c.className = d > 0 ? "plus" : d < 0 ? "minus" : "";
+        c.textContent = (d > 0 ? "+" : "") + won(d);
+        tr.append(a, b, c); tbl.appendChild(tr);
+      });
+      box.append(h, tbl);
+      return () => true;
+    }, "확인", false);
   }
 
-  /* ---------------- 서버 메시지 분배 (MainFrame.onMessage) ---------------- */
+  /* ---------------- 서버 메시지 분배 ---------------- */
   function onMessage(msg) {
     const p = msg.payload || {};
     const reqType = msg.requestId ? reqTypes[msg.requestId] : null;
@@ -1081,127 +1110,135 @@ const Client = (() => {
       case "ACK":
         if (p.requestType === "JOIN") {
           myId = p.playerId;
-          setJoined(true);
-          lobbyStatus("접속했습니다. (" + myId + ")");
+          myMoney = p.money != null ? p.money : START_MONEY;
+          renderMe();
+          lobbyStatus("접속했습니다. 방을 고르거나 새로 만드세요.");
           send("LIST_ROOMS");
-        } else if (p.requestType === "CREATE_ROOM" || p.requestType === "JOIN_ROOM") {
-          const r = rooms.find(x => x.roomId === p.roomId);
-          enterRoom(pendingTitle || (r && r.title));
-        } else if (p.requestType === "LEAVE_ROOM") {
-          show("lobby");
-          lobbyStatus("방에서 나왔습니다.");
-          send("LIST_ROOMS");
-        } else if (p.requestType === "READY") {
-          $("readyBtn").disabled = false;
-        }
+        } else if (p.requestType === "CREATE_ROOM" || p.requestType === "JOIN_ROOM") enterRoom();
+        else if (p.requestType === "LEAVE_ROOM") { room = null; show("lobby"); renderMe(); lobbyStatus("방에서 나왔습니다."); send("LIST_ROOMS"); }
+        else if (p.requestType === "READY") $("readyBtn").disabled = false;
         break;
       case "ERROR":
-        if (reqType === "JOIN") { myId = null; setJoined(false); lobbyStatus(p.message, true); }
+        if (reqType === "JOIN") { lobbyStatus(p.message, true); askNickname(); }
         else if (["LIST_ROOMS", "CREATE_ROOM", "JOIN_ROOM"].includes(reqType)) { lobbyStatus(p.message, true); send("LIST_ROOMS"); }
-        else { waiting = false; if (reqType === "READY") $("readyBtn").disabled = false; sys("요청 실패: " + p.message); renderGame(); }
+        else { waiting = false; if (reqType === "READY") $("readyBtn").disabled = false; sys("요청 실패: " + p.message); renderAll(); }
         break;
-      case "ROOM_LIST":       rooms = p.rooms; if (!rooms.some(r => r.roomId === selectedRoom)) selectedRoom = null; renderRooms(); break;
-      case "ROOM_STATE":      setRoomState(p); break;
-      case "CHAT_MESSAGE":    addChat(p); break;
+      case "ROOM_LIST":       rooms = p.rooms; renderRooms(); break;
+      case "ROOM_STATE":      if (room) setRoomState(p); break;
+      case "CHAT_MESSAGE":    if (room) addChat(p); break;
       case "GAME_START":      setGameState(p, true); break;
       case "GAME_STATE":      setGameState(p, false); break;
-      case "CHOICE_REQUIRED": if (p.choiceId !== handledChoice) { pending = p; waiting = false; renderGame(); } break;
+      case "CHOICE_REQUIRED": if (p.choiceId !== handledChoice) { pending = p; waiting = false; renderAll(); } break;
       case "GAME_OVER":       onGameOver(p); break;
     }
     if (msg.requestId) delete reqTypes[msg.requestId];
   }
 
-  /* ---------------- 이벤트 연결 ---------------- */
-  function bind() {
-    $("connectForm").addEventListener("submit", e => {
-      e.preventDefault();
-      if (myId) return;
-      const nick = $("nick").value.trim();
-      const err = validate(nick, 12, "닉네임");
-      if (err) return lobbyStatus(err, true);
-      myNick = nick;
-      lobbyStatus("서버에 접속하는 중...");
-      send("JOIN", { nickname: nick });
-    });
-    $("refreshBtn").addEventListener("click", () => send("LIST_ROOMS"));
-    $("createBtn").addEventListener("click", () => {
-      $("createForm").hidden = false;
-      $("roomTitle").value = myNick + "님의 방";
-      $("roomTitle").focus();
-      $("roomTitle").select();
-    });
-    $("createCancel").addEventListener("click", () => { $("createForm").hidden = true; });
-    $("createForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const title = $("roomTitle").value.trim();
-      const err = validate(title, 30, "방 제목");
-      if (err) return lobbyStatus(err, true);
-      $("createForm").hidden = true;
-      pendingTitle = title;
-      send("CREATE_ROOM", { title });
-    });
-    $("joinBtn").addEventListener("click", joinSelected);
+  /* ---------------- 채팅 팝업 ---------------- */
+  function openChat(mode) {
+    const pop = $("chatPop");
+    if (!pop.hidden && chatMode === mode) { pop.hidden = true; return; }
+    chatMode = mode;
+    pop.hidden = false;
+    $("chatPopTitle").textContent = mode === "quick" ? "빠른 채팅" : "채팅";
+    $("quick").hidden = false;
+    $("chatLog").hidden = mode === "quick";
+    $("chatForm").hidden = mode === "quick";
+    if (mode === "chat") { $("chatInput").focus(); const log = $("chatLog"); log.scrollTop = log.scrollHeight; }
+  }
 
-    $("readyBtn").addEventListener("click", () => {
-      $("readyBtn").disabled = true;
-      send("READY", { ready: !room.ready[myId] });
-    });
+  function bind() {
+    $("makeBtn").addEventListener("click", askRoomTitle);
+    $("refreshBtn").addEventListener("click", () => send("LIST_ROOMS"));
+    document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+      filter = t.dataset.f;
+      document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-pressed", String(x === t)));
+      renderRooms();
+    }));
+    $("readyBtn").addEventListener("click", () => { $("readyBtn").disabled = true; send("READY", { ready: !room.ready[myId] }); });
     $("leaveBtn").addEventListener("click", () => {
       if (room.status === "PLAYING") {
-        modal("방 나가기", "게임 중에 나가면 이번 판이 종료됩니다. 나갈까요?",
-          [{ label: "계속하기" }, { label: "나가기", primary: true, onClick: () => send("LEAVE_ROOM") }]);
+        openModal("방 나가기", box => {
+          const p = document.createElement("p"); p.className = "body"; p.textContent = "게임 중에 나가면 이번 판이 종료됩니다. 나갈까요?";
+          box.appendChild(p);
+          return () => { send("LEAVE_ROOM"); return true; };
+        }, "나가기", true);
       } else send("LEAVE_ROOM");
     });
     $("goBtn").addEventListener("click", () => onDecide("GO"));
     $("stopBtn").addEventListener("click", () => onDecide("STOP"));
-
+    $("quickBtn").addEventListener("click", () => openChat("quick"));
+    $("chatBtn").addEventListener("click", () => openChat("chat"));
+    $("chatClose").addEventListener("click", () => { $("chatPop").hidden = true; });
     QUICK.forEach(q => {
       const b = document.createElement("button");
       b.type = "button"; b.className = "btn"; b.textContent = q;
-      b.addEventListener("click", () => send("CHAT", { message: q }));
+      b.addEventListener("click", () => { send("CHAT", { message: q }); if (chatMode === "quick") $("chatPop").hidden = true; });
       $("quick").appendChild(b);
     });
     $("chatForm").addEventListener("submit", e => {
       e.preventDefault();
       const text = $("chatInput").value.trim();
       if (!text) return;
-      if ([...text].length > 200) return sys("채팅은 200자까지 보낼 수 있습니다.");
+      if ([...text].length > 200) { sys("채팅은 200자까지 보낼 수 있습니다."); return; }
       send("CHAT", { message: text });
       $("chatInput").value = "";
+    });
+    document.addEventListener("keydown", e => {
+      if ($("room").hidden || !$("modal").hidden) return;
+      if (e.target.tagName === "INPUT") return;
+      const i = KEYS.indexOf(e.key);
+      if (i < 0) return;
+      const btn = $("hand").children[i] && $("hand").children[i].querySelector(".cardbtn.play");
+      if (btn) btn.click();
     });
   }
 
   function reset() {
-    reqSeq = 0; myId = null; myNick = ""; pendingTitle = null; selectedRoom = null; rooms = [];
-    game = null; pending = null; waiting = false;
-    $("nick").value = "";
-    $("createForm").hidden = true;
-    setJoined(false);
-    lobbyStatus("닉네임을 입력하고 접속하세요.");
-    $("modal").hidden = true;
+    reqSeq = 0; myId = null; myNick = ""; myMoney = null; rooms = []; room = null; game = null; pending = null; waiting = false;
+    $("chatPop").hidden = true;
+    renderMe(); renderRooms(); lobbyStatus("");
     show("lobby");
+    askNickname();
   }
-
-  return { onMessage, bind, reset };
+  return { onMessage, bind, reset, start: () => { renderMe(); renderRooms(); askNickname(); } };
 })();
 
-/* ===== 공통 모달 (alert/confirm 대신) ===== */
-function modal(title, body, buttons) {
+/* ===== 공통 모달 (alert/confirm/prompt 대신) ===== */
+function openModal(title, build, okLabel, cancellable) {
   $("modalTitle").textContent = title;
-  $("modalBody").textContent = body;
+  const box = $("modalContent");
+  box.textContent = "";
+  const err = document.createElement("p"); err.className = "err";
+  const showErr = m => { err.textContent = m; };
+  const onOk = build(box, showErr);
+  box.appendChild(err);
   const row = $("modalRow");
   row.textContent = "";
-  buttons.forEach(b => {
-    const el = document.createElement("button");
-    el.type = "button";
-    el.className = "btn" + (b.primary ? " primary" : "");
-    el.textContent = b.label;
-    el.addEventListener("click", () => { $("modal").hidden = true; if (b.onClick) b.onClick(); });
-    row.appendChild(el);
-  });
+  const close = () => { $("modal").hidden = true; };
+  if (cancellable) {
+    const c = document.createElement("button"); c.type = "button"; c.className = "btn"; c.textContent = "취소";
+    c.addEventListener("click", close); row.appendChild(c);
+  }
+  const ok = document.createElement("button"); ok.type = "button"; ok.className = "btn red"; ok.textContent = okLabel;
+  const submit = () => { if (onOk()) close(); };
+  ok.addEventListener("click", submit);
+  row.appendChild(ok);
+  box.querySelectorAll("input").forEach(i => i.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); submit(); } }));
   $("modal").hidden = false;
-  row.lastChild.focus();
+  const first = box.querySelector("input");
+  (first || ok).focus();
 }
+
+/* ===== 16:9 판 크기 맞추기 ===== */
+function fitStage() {
+  const box = $("stageBox");
+  if (!box || $("room").hidden) return;
+  const scale = Math.min(box.clientWidth / 1120, 1);
+  $("stage").style.transform = "scale(" + scale + ")";
+  box.style.height = (630 * scale) + "px";
+}
+window.addEventListener("resize", fitStage);
 
 $("logToggle").addEventListener("click", () => {
   const panel = $("logPanel");
@@ -1212,6 +1249,7 @@ $("logClear").addEventListener("click", () => { $("logBody").textContent = ""; }
 $("resetBtn").addEventListener("click", () => { Server.reset(); Client.reset(); $("logBody").textContent = ""; });
 
 Client.bind();
+Client.start();
 </script>
 
 </body>
