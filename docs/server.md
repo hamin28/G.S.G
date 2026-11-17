@@ -1,6 +1,6 @@
 # Server
 
-The server implementation is under `src/gsg/server` (`gsg.server`). Run `gsg.server.ServerMain` from the IDE with Gson available on the project classpath.
+The server implementation is under `src/server` (`server`). Run `server.ServerMain` from the IDE with Gson available on the project classpath.
 
 The default port is `9999`. `ServerMain` accepts an optional port argument; pass `5000` to match the Swing lobby's current default, or set the UI port to `9999`.
 
