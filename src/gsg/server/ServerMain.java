@@ -1,5 +1,5 @@
 // 서버 실행·접속 수락
-package server;
+package gsg.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

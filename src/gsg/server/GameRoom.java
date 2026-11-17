@@ -1,5 +1,5 @@
 // 게임 내의 로직(게임 진행 관련)을 처리하기 위한 클래스이다.  GameUser를 여러개 가질 수 있음
-package server;
+package gsg.server;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;

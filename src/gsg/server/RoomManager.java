@@ -1,5 +1,5 @@
 // Room의 생성/삭제를 관리하는 클래스이다. Room을 여러개 가질 수 있음
-package server;
+package gsg.server;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;

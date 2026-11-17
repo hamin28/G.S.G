@@ -1,4 +1,4 @@
-package protocol;
+package gsg.protocol;
 
 import com.google.gson.JsonObject;
 
