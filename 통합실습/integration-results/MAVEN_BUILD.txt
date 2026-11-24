@@ -1,0 +1,31 @@
+Access is denied.
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< gsg:github-integration-check >--------------------
+[INFO] Building github-integration-check 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ github-integration-check ---
+[INFO] Copying 51 resources from hwatu_image to target\classes\resource\hwatu_image
+[INFO] Copying 1 resource from data to target\classes\data
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ github-integration-check ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ github-integration-check ---
+[INFO] skip non existing resourceDirectory C:\Users\hamin\Documents\ChatGPT\��Ʈ��ũ���α׷���\G.S.G-full-integration\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ github-integration-check ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ github-integration-check ---
+[INFO] Tests are skipped.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.889 s
+[INFO] Finished at: 2026-11-24T17:42:43+09:00
+[INFO] ------------------------------------------------------------------------

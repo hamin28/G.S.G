@@ -1,0 +1,37 @@
+GitHub originals: a772a84
+Java 21.0.8
+
+PASS: 48 monthly card classifications and 2 service cards
+PASS: 500 deals, 50 distinct IDs, and 0/1/2 initial service captures
+PASS: 4 matching cases (0/1/2/3 cards)
+PASS: turn choices, ppeok, ttadak + sweep, jjok + sweep
+PASS: normal and fixed settlement, both balance caps
+PASS: round state, legal choices, card conservation and turn changes
+PASS: dealer offer, collision, ranking, tie and stale draw
+PASS: hand/floor tongtong, void and redeal with original dealer
+PASS: two-player turns, private hands and request versions (seed 1)
+PASS: 광·띠·고도리·국진·피 점수 및 고 재선택
+PASS: 박·배율 누적·고정금·지급 상한
+PASS: 서비스패·요청 검증·30초·중복 종료
+PASS: 매칭 선택·뻑/자뻑·3뻑·쪽·따닥·쓸·흔들기·폭탄 기회
+PASS: 고 기준점·국진 선택·마지막 턴 자동정산·나가리
+PASS: 준비·선결정 충돌·기권·새 상대 대기
+PASS: 서비스·폭탄 누적·선택 중 기권·역고·파산 경계 조건
+PASS: 무작위 완주 종료 분포 {NORMAL=1855, TONGTONG=55, THREE_PPEOK=6, DRAW=83, VOID=1}
+PASS: 최종 게임 로직 49413개 검증, 무작위 완주 2000판
+PASS: 저장소 카드 50장과 뒷면 이미지 로딩·ID 대응
+PASS: 원본 서버 100ms 예약 작업 + 가상 시각 30초 전진으로 무료 퇴장/기권 정산
+PASS: 원본 서버 실제 TCP 80판 종료 {NORMAL=79, TONGTONG=1}
+PASS: 전송한 행동 [BOMB, DECK_ONLY, GO, GUKJIN_PI, PLAY, SELECT, SERVICE, SHAKE, STOP], 도달 상태 [GO_STOP, GUKJIN, HAND_CHOICE, PLAY, STOCK_CHOICE]
+PASS: 개인별 패·상태 일치·정산·다음 판·잘못된 차례·시간 초과 (9859 checks)
+KNOWN LIMIT: 원본 UI 서비스패 클릭은 PLAY를 전송해 서버가 거절함
+PASS: 원본 MainFrame 로비·방 생성/입장·준비·선결정·카드 제출/선택 (카드 15회, 선택 5회)
+PASS: 원본 화면에서 정상 종료/정산 1판 (부족한 행동은 수정하지 않음)
+KNOWN LIMIT: 점수 객체를 숫자로 읽어 0점 표시=true, 서비스패 연결 누락 재현=true
+PASS: 원본 화면 캡처 target/ui-check/*.png
+KNOWN LIMIT: 원본 UI 서비스패 클릭은 PLAY를 전송해 서버가 거절함
+PASS: 원본 MainFrame 로비·방 생성/입장·준비·선결정·카드 제출/선택 (카드 17회, 선택 5회)
+PASS: 원본 화면에서 정상 종료/정산 1판 (부족한 행동은 수정하지 않음)
+KNOWN LIMIT: 점수 객체를 숫자로 읽어 0점 표시=true, 서비스패 연결 누락 재현=true
+PASS: 원본 화면 캡처 target/ui-check/*.png
+PASS: 원본 ServerMain.main + MainFrame 두 개, 실제 서버 시계·예약 타이머로 실행

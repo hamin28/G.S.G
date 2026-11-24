@@ -1,0 +1,18 @@
+PASS: 48 monthly card classifications and 2 service cards
+PASS: 500 deals, 50 distinct IDs, and 0/1/2 initial service captures
+PASS: 4 matching cases (0/1/2/3 cards)
+PASS: turn choices, ppeok, ttadak + sweep, jjok + sweep
+PASS: normal and fixed settlement, both balance caps
+PASS: round state, legal choices, card conservation and turn changes
+PASS: dealer offer, collision, ranking, tie and stale draw
+PASS: hand/floor tongtong, void and redeal with original dealer
+PASS: two-player turns, private hands and request versions (seed 1)
+PASS: 광·띠·고도리·국진·피 점수 및 고 재선택
+PASS: 박·배율 누적·고정금·지급 상한
+PASS: 서비스패·요청 검증·30초·중복 종료
+PASS: 매칭 선택·뻑/자뻑·3뻑·쪽·따닥·쓸·흔들기·폭탄 기회
+PASS: 고 기준점·국진 선택·마지막 턴 자동정산·나가리
+PASS: 준비·선결정 충돌·기권·새 상대 대기
+PASS: 서비스·폭탄 누적·선택 중 기권·역고·파산 경계 조건
+PASS: 무작위 완주 종료 분포 {NORMAL=1855, TONGTONG=55, THREE_PPEOK=6, DRAW=83, VOID=1}
+PASS: 최종 게임 로직 49413개 검증, 무작위 완주 2000판

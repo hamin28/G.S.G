@@ -1,0 +1,454 @@
+{
+  "repository": "https://github.com/hamin28/G.S.G.git",
+  "commit": "a772a84cf99401b7719b55587ebbe2b63947b62b",
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "8C1315AED681B8357649A2646244F0E411A4CF4DD7E6F9EFBA5AC046A0FC2123"
+    },
+    {
+      "path": "README.md",
+      "sha256": "D1630AC2A4B117E1A442D28AD8486E18F647403C59CC04B77729D1EEF3B50448"
+    },
+    {
+      "path": "data/cards.json",
+      "sha256": "36DC061C15D9F1F66CAF1BF69C9226A34C583B39FB09FAC123C0744E5F26C357"
+    },
+    {
+      "path": "docs/CLIENT_UI.md",
+      "sha256": "B29D9119958903C81E5D2E2932478859B1C16B5A0EAA7A1800D7578445AD11F2"
+    },
+    {
+      "path": "docs/GAME_LOGIC.md",
+      "sha256": "209D921E9191E348425589382BF2CFADC657C181AE0996377DB5D21A294E189E"
+    },
+    {
+      "path": "docs/card-resources.md",
+      "sha256": "263F4992FE8CA6A4F4336685E3C49BA25257A8B2F2A184701224010D0755F078"
+    },
+    {
+      "path": "docs/protocol.md",
+      "sha256": "96F847ECA5C6668EF8DAEEC48A64B2CF0FBC281D9AA38BF441F007E7740C32FB"
+    },
+    {
+      "path": "docs/server.md",
+      "sha256": "7167425CCBF54675031AF85EDB8692A8EF7D84726453F8D53210B9D2766D70EF"
+    },
+    {
+      "path": "docs/ui-screens/1_lobby.png",
+      "sha256": "875683ABCB7E6F88AB0C65D902056405FD9D03181B8D1ADAA71B3929C67EEE54"
+    },
+    {
+      "path": "docs/ui-screens/2_room_waiting.png",
+      "sha256": "018B56B328CD9EF4B30D5DE17596EEF37184BE173BC2A8F71DF15AB4948795BA"
+    },
+    {
+      "path": "docs/ui-screens/3_room_game.png",
+      "sha256": "775D169B6D53F985069848E380161080281CAD04BE59B39C4F65DDB4C08102A3"
+    },
+    {
+      "path": "docs/ui-screens/4_choice_capture.png",
+      "sha256": "887CC62684728356B297543DEB689CDF8064E4FA2F5E32811DD25CA987573B67"
+    },
+    {
+      "path": "docs/ui-screens/5_choice_gostop.png",
+      "sha256": "B4248F3B288382166912DE2A3ABDFB1898C0E72D2B66E5E17036C85544289C86"
+    },
+    {
+      "path": "hwatu_image/april_1.png",
+      "sha256": "9E92DA8DAF7E1F6022621CF3E5EE138F5199C2DD6B55C202AC0255D77609B526"
+    },
+    {
+      "path": "hwatu_image/april_2.png",
+      "sha256": "B9DE7F13DA7094581C4EA87D933FE29D011C518A034E282D4BCFF9C9E433F972"
+    },
+    {
+      "path": "hwatu_image/april_3.png",
+      "sha256": "45A1B0EAAE9CA6DEB3FA9A0D3741308595EF72A01C4BF96BA6BD22F04742D1F8"
+    },
+    {
+      "path": "hwatu_image/april_4.png",
+      "sha256": "32F2B6405B6020F7874F0B6C09E759A8AD9B7615DF94EF3553A06C61E3F83D1D"
+    },
+    {
+      "path": "hwatu_image/august_1.png",
+      "sha256": "AD387D13C5F27639D2FEC40A49D08DF6B5E3BC004EEE7241057C632EE66A4523"
+    },
+    {
+      "path": "hwatu_image/august_2.png",
+      "sha256": "E2600006719171C1E7778A5C47C5AE57F873B6543DB63BB844F81B7735C953C3"
+    },
+    {
+      "path": "hwatu_image/august_3.png",
+      "sha256": "5176E220E334AB966BD37FC42CF2B4C77B95CDFE6169CA057FFE6F0398F2BE21"
+    },
+    {
+      "path": "hwatu_image/august_4.png",
+      "sha256": "66E784F453E3263113B7C20825B8524CAB571A09946543EC15DCD2E40B1C8D14"
+    },
+    {
+      "path": "hwatu_image/back.png",
+      "sha256": "89D0182F351F5D7951A8E8E76B19A41A1D93D7C9A4E3298DAED1F586CE1E3362"
+    },
+    {
+      "path": "hwatu_image/bonus_1.png",
+      "sha256": "E6F17C73E438782F20AB9100313FD549ABD25DA438C3CADABF3B5B60538ECA95"
+    },
+    {
+      "path": "hwatu_image/bonus_2.png",
+      "sha256": "D4E81C2D4519E38E5DBB9D8EAE931A4FDF612AFECE672AE7016969CE59E78686"
+    },
+    {
+      "path": "hwatu_image/december_1.png",
+      "sha256": "00248A7C0D2852CF9EA932A2E7F484B099F27890B03354A2BDA407A1622DD2E0"
+    },
+    {
+      "path": "hwatu_image/december_2.png",
+      "sha256": "5A562BD5781BCD610FA29DA1ECCECCBF00DDD4BD475D33EDB927D60930A20F7F"
+    },
+    {
+      "path": "hwatu_image/december_3.png",
+      "sha256": "AC113DC075743742272A01421065A4A0FE67CB85A03800480CB8A5ADF53F0497"
+    },
+    {
+      "path": "hwatu_image/december_4.png",
+      "sha256": "3A2669AD06765FF0A3B07AC85C624A9115AF4AB31FE39BA38C32FCC98C24B5CC"
+    },
+    {
+      "path": "hwatu_image/february_1.png",
+      "sha256": "B97F13BF5F3AC337C73D033BD6CB8C35B6C4CD5B737991A11E9FDD9B0639B72E"
+    },
+    {
+      "path": "hwatu_image/february_2.png",
+      "sha256": "0B48B8BD4A9A68A16B4CB20A167AD01C136CA8F02AB45711A1F8F7AE18D20FE1"
+    },
+    {
+      "path": "hwatu_image/february_3.png",
+      "sha256": "EB82965110E7B69C5086E401B6850720C184C0074EE7E954938862EF25014960"
+    },
+    {
+      "path": "hwatu_image/february_4.png",
+      "sha256": "FE0B11079D233276C020D2161016572F0636DE13881B8047889B91003A1C89BE"
+    },
+    {
+      "path": "hwatu_image/january_1.png",
+      "sha256": "434A187FE0446DB1E414268339396C0EC75FD3BB096565F7D5DEA0F0B3640997"
+    },
+    {
+      "path": "hwatu_image/january_2.png",
+      "sha256": "9B68B019302F65623F2DAC6D0CB10EA7C2453CA5BD0F0E318A446C784DB8EF36"
+    },
+    {
+      "path": "hwatu_image/january_3.png",
+      "sha256": "DC6DED178DFAE927FA212303D9E64BC3C0C30EA584CD4F32A9C91B1F3D7AE804"
+    },
+    {
+      "path": "hwatu_image/january_4.png",
+      "sha256": "CABB6BA83B7A815CBB1AFC546548114560F3F6B0B94BF7F6B3443C5EE5AB309B"
+    },
+    {
+      "path": "hwatu_image/july_1.png",
+      "sha256": "2EC9176503CCD8E13E3DAD2C075D7E2CA3E88B860DFCA3936ED6F8CC642A07F8"
+    },
+    {
+      "path": "hwatu_image/july_2.png",
+      "sha256": "2CA926EF71E11F93E6700A05A5D192D0250F12C791A2D876641975BD2C23EE44"
+    },
+    {
+      "path": "hwatu_image/july_3.png",
+      "sha256": "1860C9CBCBF3E4229B520B621CA1278973E2B3AFF9ED546D066BAD065F68962C"
+    },
+    {
+      "path": "hwatu_image/july_4.png",
+      "sha256": "551E958C512EDD221C3346C7F6B08E6EEFD5136D205CC4223958EFBDCFB315E2"
+    },
+    {
+      "path": "hwatu_image/june_1.png",
+      "sha256": "0759397BE27170826A385FBB0399660E6736EDFA0B616FD9E5BB67300E7AA6EC"
+    },
+    {
+      "path": "hwatu_image/june_2.png",
+      "sha256": "FEE0462ECCDAE811A8F42CEFECC5F66FFF73579BB1BB610EC61EB05ED697C281"
+    },
+    {
+      "path": "hwatu_image/june_3.png",
+      "sha256": "D0D116354D4A8D21A03E175CD05564B01018826DF88AF388024373D061A119F0"
+    },
+    {
+      "path": "hwatu_image/june_4.png",
+      "sha256": "DC7A9EDE4A6A00A41DDDF355EEE862C3EA85D8E19CF5BC0FE17EF23CCD35E469"
+    },
+    {
+      "path": "hwatu_image/march_1.png",
+      "sha256": "D5B36747C2FBF2B0645BF5615B796BE64F2E7D36174A5CA7CC1A9F5319100CF7"
+    },
+    {
+      "path": "hwatu_image/march_2.png",
+      "sha256": "75BAA09CD9407359068D39493498A77BF417AB29BA24782B59339BBB60730A38"
+    },
+    {
+      "path": "hwatu_image/march_3.png",
+      "sha256": "D273DF944048F370730B81AC3FEAEFE7CF885C75883914799E209B014DFB64BC"
+    },
+    {
+      "path": "hwatu_image/march_4.png",
+      "sha256": "10CE4FB8BF5113D2D8DC10BF6F7D685CF9B1F0CF8194A299D1D3B40C309D363C"
+    },
+    {
+      "path": "hwatu_image/may_1.png",
+      "sha256": "878C9D76EAB5EDF0CD8B3B827E4C00FFFAD9660E1A47B95B03AFD12F2030BAE3"
+    },
+    {
+      "path": "hwatu_image/may_2.png",
+      "sha256": "631946B4015443F46CC44C007730EFDC28B23955C3C93FF6227214FA7FFC1634"
+    },
+    {
+      "path": "hwatu_image/may_3.png",
+      "sha256": "FC2AF43A15AA76B86458F2E7F5B2FEAFD0C08FFEF491C4BBBB2E49745BB54053"
+    },
+    {
+      "path": "hwatu_image/may_4.png",
+      "sha256": "4A18CDD8DAEB1A0E973C231BC786602FC51A18F52FF4224B3C424528351F7AFD"
+    },
+    {
+      "path": "hwatu_image/november_1.png",
+      "sha256": "5EB8637754295BDF9DFACED44551094547413B54CC3EC493E19129A50502DC13"
+    },
+    {
+      "path": "hwatu_image/november_2.png",
+      "sha256": "26EFA3A44721A490EEA7CC7F474EAC6535AE09CC8AAB6E470BBE04475DA333C8"
+    },
+    {
+      "path": "hwatu_image/november_3.png",
+      "sha256": "8AF09E363AAD94A7A9047ED34A02AB44A12D272500A7AC872BD0F00A1237373C"
+    },
+    {
+      "path": "hwatu_image/november_4.png",
+      "sha256": "94F0F712F4440DA09DAA69088A10F4A0EBD8BC25F69F63BA04347CF286967254"
+    },
+    {
+      "path": "hwatu_image/october_1.png",
+      "sha256": "D305B3175F4DAB26E63E65834B5BAC97630C383D946F97267CEB4D690E4DD518"
+    },
+    {
+      "path": "hwatu_image/october_2.png",
+      "sha256": "2E18C7C22726D607EC9E46D2977235E23114143CF91DCF9E2B1D876B6452CDB6"
+    },
+    {
+      "path": "hwatu_image/october_3.png",
+      "sha256": "D7B956829F247C14769CC7164F74FA5737F8CEE30B2CD1D410BC8076A4CAFBC5"
+    },
+    {
+      "path": "hwatu_image/october_4.png",
+      "sha256": "B18FCBAC415D7366233AD6DE1A84F815415C3DA2F7C309BF3F19D8ABCEC97483"
+    },
+    {
+      "path": "hwatu_image/september_1.png",
+      "sha256": "8CC2F1DABF2DD0339A36658D9A6EAA5336B26790DF45DDA8F52808A83648E4EB"
+    },
+    {
+      "path": "hwatu_image/september_2.png",
+      "sha256": "E071AECDE3DB6616335A716E3A806B9D016D566F976203BA5B3B7C08C3810BB2"
+    },
+    {
+      "path": "hwatu_image/september_3.png",
+      "sha256": "F074210E5F4A391915619B99D3AEAC0DA8DF3495D00BBB19D247FA302ED289B8"
+    },
+    {
+      "path": "hwatu_image/september_4.png",
+      "sha256": "12F781C83AF137268EF9C78D61C3F8B0FDBC4876A0B25BBC96699299AB46315E"
+    },
+    {
+      "path": "src/GameLogic/GAME_LOGIC.md",
+      "sha256": "11492D1BC0A39ACFC77843898F29FC1E20C36F0C01A46B1CC58E14E6107CFE46"
+    },
+    {
+      "path": "src/GameLogic/README.md",
+      "sha256": "3372CDB0754402F29C296F2D8D0420BD0350CF6B342274CBACDA65388EB2EB96"
+    },
+    {
+      "path": "src/GameLogic/TEST_RESULTS.txt",
+      "sha256": "6859A6C7A3B854013456D58F790DFEED4B40CF593116B2F978F8861E7CCC306B"
+    },
+    {
+      "path": "src/GameLogic/TEST_RESULTS_JDK21.txt",
+      "sha256": "6859A6C7A3B854013456D58F790DFEED4B40CF593116B2F978F8861E7CCC306B"
+    },
+    {
+      "path": "src/GameLogic/TEST_RESULTS_JDK26.txt",
+      "sha256": "6859A6C7A3B854013456D58F790DFEED4B40CF593116B2F978F8861E7CCC306B"
+    },
+    {
+      "path": "src/GameLogic/pom.xml",
+      "sha256": "B16FFDDBBD0B98B5EA1FE3057527BFF842471836BEA5B46030EDA4E68D702E23"
+    },
+    {
+      "path": "src/GameLogic/run-checks.ps1",
+      "sha256": "C92B2F7316782AAAB2408EE2503ED3B1A19AEEE70476D5377FBD86A65A712DD2"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/Card.java",
+      "sha256": "6B423E524CA905E28D71A1FEC819F339A1E05B1BCD6A5F243D950DA288CBE4EC"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/CardMatcher.java",
+      "sha256": "81E0ED40A12602367273149EFD7FDE7732EC5386C4D66F8701B2B4CA4DA9B4B9"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/CardType.java",
+      "sha256": "C5A0C5885BA9BB309B0ED30EF35BBA9BE6E1126E46ACC8A0F115BF929B07DD70"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/DealerSelection.java",
+      "sha256": "806F51AFAC885A23FA3E9AAC97F2B1B0CEB7DFD4C3A4916F7661D533CC99B511"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/DeckManager.java",
+      "sha256": "8640008A17DA78D089836F2D18F87D92B3D28114483A5CE7BE3A512BEB0F8A42"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/GameState.java",
+      "sha256": "58025584BA2D33E11ECBB04421B671D6AFECB5161736346B017946C5ED9105CD"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/GoStopRules.java",
+      "sha256": "AA2A2F76AA7393C32100DDCB3D1E8CB6533607D226E28F71693504B94BC9DD75"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/LogicConsole.java",
+      "sha256": "9FB77642547B7FF891E93ED76B5C484165A1DA32DBDC3ECDB07E1C75F7E79AFF"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/MatchEngine.java",
+      "sha256": "8A965F53FD297D575EA8588319D0576B7EEE3F702A4B66FE99CB957A8745F4F4"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/RoomRules.java",
+      "sha256": "074ECF85E1DFF601CEBF405C9980EC2F9F2060D752EFB831495DA9D5D118C490"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/RoundInitializer.java",
+      "sha256": "7E07087DBAC1098ECC15E8F17371D9B3B0130F35DD074F28772A4F68ED38A57C"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/ScoreCalculator.java",
+      "sha256": "B3F53D1458E5AC58E389F375C021DB23F92CD63194D33080C530CE1968B5838A"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/SettlementCalculator.java",
+      "sha256": "F1AA7A3AEC988041EB33212DCFDCC1E646219EF73A5CDC315AE1AB51F3D69EAA"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/SpecialRules.java",
+      "sha256": "05D258133F7BEC508FC78568261307C6BA6AFE7E99623328569615FA63231AC8"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/TurnEngine.java",
+      "sha256": "908811FE694868253CF68EE8ED5C1CD3906E176E4887D5A7DA0FFABF7BCE371E"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/TurnMatcher.java",
+      "sha256": "8E75B62870833124EB01BBE42AF67E2613EAB8D76D53F5A3B63D3123B17CA771"
+    },
+    {
+      "path": "src/GameLogic/src/main/java/gallaemallae/game/TurnState.java",
+      "sha256": "3D8D2820C0A7D77D40BAB5BD39276FF7EB61BFB7EE72A33C9B9CE9F994C42EFE"
+    },
+    {
+      "path": "src/GameLogic/src/test/java/gallaemallae/game/FullGameCheck.java",
+      "sha256": "D9586CFFFB82D999E5EA0665B1BC604D5E4E93E7C487142A7BE4C117E17E7498"
+    },
+    {
+      "path": "src/GameLogic/src/test/java/gallaemallae/game/GameRulesCheck.java",
+      "sha256": "413AAFE4722C0FF5C729426B3C0ECC7FA1477D7D7CB18B4BACD9ADA6D9BF3F6B"
+    },
+    {
+      "path": "src/GameLogic/src/test/java/gallaemallae/game/Step5Check.java",
+      "sha256": "87E2CCCA540B1C6F24709C38C1F862370B99F5D3BAB843C64C700DF152C17B18"
+    },
+    {
+      "path": "src/GameLogic/src/test/java/gallaemallae/game/Step6Check.java",
+      "sha256": "062A32633947E416BDAF0B5C7D803CC4B5C5515B05FF28537D9C3269E7C6CC1C"
+    },
+    {
+      "path": "src/GameLogic/src/test/java/gallaemallae/game/Step7Check.java",
+      "sha256": "D628922DA6E76CBDAD5F65F7361CDBB5EB307D43E81A2BC02C90AE7DDFF3164D"
+    },
+    {
+      "path": "src/GameLogic/검증기록.md",
+      "sha256": "514AB9E19058CED57E43BC139F2A60BE7F527DA29B20ADE0CCA5E11E54074FE5"
+    },
+    {
+      "path": "src/UI/CardCatalog.java",
+      "sha256": "62ADCACF14D10C43705CC42D7ABC6B4B7248A8208E1AC208293E0F2D1717997F"
+    },
+    {
+      "path": "src/UI/CardView.java",
+      "sha256": "81886A760B4276A33A62C2619E3900E97F01D5E8D674C9858C22DFDEAC184A0E"
+    },
+    {
+      "path": "src/UI/ClientMain.java",
+      "sha256": "F96711B1035950C2DB646BB3A0F05F5BA7DBA72F4AA4AB73F1178C51B53FEDA6"
+    },
+    {
+      "path": "src/UI/FeltPanel.java",
+      "sha256": "F4D354A6B90374A58379B57E15E24126120FE478EC9CBCFF5118FDBBAACED855"
+    },
+    {
+      "path": "src/UI/GameClient.java",
+      "sha256": "C7804D6E9A373BB6AEA91E269AE3C8A56F7E6060B42368C5D1AF5281EFA02DA2"
+    },
+    {
+      "path": "src/UI/GamePanel.java",
+      "sha256": "D19C3F381FB99472AECBC3E05446ABA4074F5B0A80B4B5EE806D69B93BEA8CA0"
+    },
+    {
+      "path": "src/UI/Jx.java",
+      "sha256": "A2A356ADD16F99ABB205A73BBC07EB40728ECCD2FA76E3226A755AE5A6D67E91"
+    },
+    {
+      "path": "src/UI/LobbyPanel.java",
+      "sha256": "290BA4F9F813EEBFDE870DFF071540068550F9EA0A10CD802CDBD10BCD4D06F1"
+    },
+    {
+      "path": "src/UI/MainFrame.java",
+      "sha256": "E17A1CB106897FEEA65265F5240ECC9CFF340D98FAAADE7BF30D48A24608CCA2"
+    },
+    {
+      "path": "src/UI/RoomRow.java",
+      "sha256": "61D20A099380E12E288F81DFEE72A7E59A0917B0BDB287613D4DC9002ECF1D8F"
+    },
+    {
+      "path": "src/UI/Session.java",
+      "sha256": "9C16CF972FEE8B9777DA926AEB782E8097F03E04901CE33D8C45A0AB80D4F99D"
+    },
+    {
+      "path": "src/server/GameRoom.java",
+      "sha256": "DBEFA08D6CE824A41E5D0CD2BE5FF745DFBA4BCAC71A637D41F7FDD0C5E1E4B3"
+    },
+    {
+      "path": "src/server/GameUser.java",
+      "sha256": "0FF47B637B3C8D05183A4BE9A9795224CD5922DDFFB71167D8ADFAD8C8E7DE3D"
+    },
+    {
+      "path": "src/server/NETWORK_SERVER.md",
+      "sha256": "3931C86DC3AA4D36D1FD1E9D6157C26A3A110885319A5B9EB341634F31F7BF82"
+    },
+    {
+      "path": "src/server/RoomManager.java",
+      "sha256": "3D8A8D24464B97A50BC9664104B9AAED21037400A0F088444CE673263D4C23BB"
+    },
+    {
+      "path": "src/server/ServerMain.java",
+      "sha256": "25C42CA9BED0942BB20D70D3FB95BFF7AB03FCCB41716CF7FE9095835FC96FE8"
+    },
+    {
+      "path": "src/server/protocol/Message.java",
+      "sha256": "F2FFC27C5A8FAD5AE06AFC04CB72630A7C0A3F0B88606298032DD5924A1D8137"
+    },
+    {
+      "path": "ui-demo/index.html",
+      "sha256": "E76BFCB3DA5A321E9F1B5C117EB5D6D8A1B61E435F6B3F6A61652E8905AD62C9"
+    }
+  ]
+}
