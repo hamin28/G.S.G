@@ -1,52 +1,53 @@
-// 게임 내의 로직(게임 진행 관련)을 처리하기 위한 클래스이다.  GameUser를 여러개 가질 수 있음
 package server;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
+import com.google.gson.*;
+import gallaemallae.game.*;
+import gallaemallae.game.GameState.Seat;
+import java.util.*;
 
-import java.util.Vector;
-
+/** 방 참가자는 Vector로 관리하고, 게임 규칙은 방별 RoomRules 하나에 맡긴다. */
 public class GameRoom {
-	final String roomId;
-	final String title;
-	final int maxPlayers = 2;
+    final String roomId;
+    final String title;
+    final int maxPlayers = 2;
+    final Vector<GameUser> users = new Vector<>();
+    final EnumMap<Seat, GameUser> seats = new EnumMap<>(Seat.class);
+    final RoomRules rules;
+    long lastStartedRound;
+    long currentRound;
+    long selectionSequence;
+    MatchEngine.Result notifiedResult;
 
-	String status = "WAITING";
-	final Vector<GameUser> users = new Vector<>();
-
-	public GameRoom(String roomId, String title) {
-		this.roomId = roomId;
-		this.title = title;
-	}
-
-	// 방 목록에 표시할 정보
-	public JsonObject toSummary() {
-		JsonObject room = new JsonObject();
-
-		room.addProperty("roomId", roomId);
-		room.addProperty("title", title);
-		room.addProperty("playerCount", users.size());
-		room.addProperty("maxPlayers", maxPlayers);
-		room.addProperty("status", status);
-
-		return room;
-	}
-
-	// 방 상태 이벤트에 포함할 현재 플레이어 목록을 만든다.
-	public JsonObject toState() {
-		JsonObject state = toSummary();
-		JsonArray players = new JsonArray();
-
-		for (GameUser user : users) {
-			JsonObject player = new JsonObject();
-			player.addProperty("playerId", user.playerId);
-			player.addProperty("nickname", user.nickname);
-			player.addProperty("ready", user.ready);
-			players.add(player);
-		}
-
-		state.add("players", players);
-		return state;
-	}
-
+    public GameRoom(String roomId, String title) { this(roomId, title, new Random()); }
+    GameRoom(String roomId, String title, Random random) {
+        this.roomId = roomId; this.title = title; rules = new RoomRules(random);
+    }
+    Seat seatFor(GameUser user) {
+        for (var entry : seats.entrySet()) if (entry.getValue() == user) return entry.getKey();
+        throw new RoomManager.RequestException("NOT_IN_ROOM", "방 참가자가 아닙니다.");
+    }
+    String playerId(Seat seat) {
+        GameUser user = seat == null ? null : seats.get(seat);
+        return user == null ? null : user.playerId;
+    }
+    String gameId(long round) { return roomId + "-round-" + round; }
+    String selectionId() { return roomId + "-selection-" + selectionSequence; }
+    public JsonObject toSummary() {
+        JsonObject value = new JsonObject();
+        value.addProperty("roomId", roomId); value.addProperty("title", title);
+        value.addProperty("playerCount", users.size()); value.addProperty("maxPlayers", maxPlayers);
+        value.addProperty("status", rules.status().name());
+        return value;
+    }
+    public JsonObject toState() {
+        JsonObject value = toSummary(); JsonArray players = new JsonArray();
+        for (GameUser user : users) {
+            Seat seat = seatFor(user); JsonObject player = new JsonObject();
+            player.addProperty("playerId", user.playerId); player.addProperty("nickname", user.nickname);
+            player.addProperty("seat", seat.name()); player.addProperty("ready", rules.isReady(seat));
+            player.addProperty("balance", rules.money(seat)); players.add(player);
+        }
+        value.add("players", players);
+        return value;
+    }
 }

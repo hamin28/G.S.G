@@ -11,7 +11,8 @@ public class ServerMain {
 		RoomManager roomManager = new RoomManager();
 		int port = args.length > 0 ? Integer.parseInt(args[0]) : 9999;
 
-		try (ServerSocket server = new ServerSocket(port)) {
+		try (roomManager; ServerSocket server = new ServerSocket(port)) {
+			roomManager.startTimer();
 			System.out.println(port + "번 서버 시작");
 
 			while (true) {
