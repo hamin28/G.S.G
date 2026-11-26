@@ -266,7 +266,7 @@ public class GamePanel extends JPanel {
         int stock = Jx.num(b, "stockCount", 0);
 
         // [8-8] 폭탄패: 서버가 알려 준 폭탄 기회(ownTokens)만큼 손패 줄 끝에 폭탄패를 붙임. 클릭하면 DECK_ONLY
-        // TODO(확인): ownTokens가 폭탄 기회 수를 뜻하는지, 모양(숫자/배열/객체)과 키 이름은 [수신] 로그로 대조
+        // 서버 MatchEngine.View.ownTokens(정수) = 남은 폭탄 뒤집기 기회 (폭탄 1회당 2회)
         int bombs = Jx.count(b.get("ownTokens"));
         for (int i = 0; i < bombs; i++) handIds.add(CardCatalog.BOMB_ID);
 
@@ -360,20 +360,19 @@ public class GamePanel extends JPanel {
     }
 
     // [8-8] 흔들기: 손패에 같은 월 3장 이상 + 바닥에 그 월 없음
-    // TODO(확인): 서버가 흔들기를 이 조건에서 SHAKE로만 받는지, "그냥 내기(PLAY)"도 허용하는지
+    // 서버 SpecialRules.canShake: 같은 월 손패 정확히 3장 + 바닥 0장 (이미 흔든 월은 서버가 거절). PLAY로 그냥 내는 것도 허용됨
     private boolean isShake(int cardId) {
         if (cardId < 1 || cardId > 48) return false;
         int m = (cardId - 1) / 4;
-        return countMonth("ownHand", m) >= 3 && countMonth("floor", m) == 0;
+        return countMonth("ownHand", m) == 3 && countMonth("floor", m) == 0;
     }
 
     // [8-8] 폭탄 조건: 손패에 같은 월이 3장 이상이고 바닥에도 그 월이 있을 때 (일반 패 1~48만)
-    // TODO(확인): 서버가 이 상황을 PLAY가 아니라 BOMB로 요구하는지, 바닥 조건(1장/2장 이상)이 같은지
     private boolean isBomb(int cardId) {
         if (cardId < 1 || cardId > 48) return false;
         int m = (cardId - 1) / 4;
-        // 한 월은 4장뿐이라 손패 3장이면 바닥에는 최대 1장
-        return countMonth("ownHand", m) >= 3 && countMonth("floor", m) >= 1;
+        // 서버 SpecialRules.canBomb: 같은 월 손패 정확히 3장 + 바닥 정확히 1장
+        return countMonth("ownHand", m) == 3 && countMonth("floor", m) == 1;
     }
 
     // [8-8] GAME_ACTION: 최신 상태의 gameId, roundNumber(또는 roundId), version을 그대로 붙여 보낸다.
@@ -430,14 +429,13 @@ public class GamePanel extends JPanel {
 
     // GAME_OVER: gameId, roomId, roundNumber, reason, winnerId, settlement, results[playerId, balance, bankrupt], nextDealerId ...
     // TODO(확인): settlement 안의 필드 이름. 지금은 안에 있는 값을 "이름: 값"으로 그대로 보여 줌
-    // 정산 항목 이름을 읽기 쉬운 한글로 (모르는 이름은 그대로)
-    // TODO(확인): settlement의 나머지 필드 이름을 서버 로그로 확인해 이 표에 추가
+    // 정산 항목 이름을 읽기 쉬운 한글로. 서버 GoStopRules.Settlement: baseScore, goBonus, factors{}, calculatedAmount, paidAmount
     private static String settlementLabel(String key) {
         switch (key) {
             case "baseScore": return "기본 점수";
+            case "goBonus": return "고 보너스";
+            case "calculatedAmount": return "계산 금액";
             case "paidAmount": return "실제 지급액";
-            case "multiplier": return "배율";
-            case "amount": return "계산 금액";
             default: return key;
         }
     }
@@ -473,6 +471,11 @@ public class GamePanel extends JPanel {
             for (Map.Entry<String, JsonElement> en : settlement.entrySet()) {
                 if (en.getValue().isJsonPrimitive()) {
                     sb.append(settlementLabel(en.getKey())).append(": ").append(en.getValue().getAsString()).append("\n");
+                } else if ("factors".equals(en.getKey()) && en.getValue().isJsonObject()) {
+                    // 배율 항목들 (키 이름은 서버가 정한 그대로 표시)
+                    for (Map.Entry<String, JsonElement> f : en.getValue().getAsJsonObject().entrySet()) {
+                        sb.append("배율 ").append(f.getKey()).append(": x").append(f.getValue().getAsString()).append("\n");
+                    }
                 }
             }
         }
