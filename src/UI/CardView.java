@@ -62,6 +62,7 @@ public class CardView extends JComponent {
         Thread t = new Thread(() -> {
             long start = System.currentTimeMillis();
             load(CardCatalog.BACK);
+            load(CardCatalog.BOMB);
             for (int id = 1; id <= 50; id++) {
                 load(CardCatalog.pathOf(id));
             }

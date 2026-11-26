@@ -10,6 +10,11 @@ public final class CardCatalog {
     public static final String DIR = "/resource/hwatu_image/";
     public static final String BACK = DIR + "back.png";
 
+    // [8-7] 폭탄패: 서버 카드 ID(1~50)에 없는 화면 전용 카드. 서비스패(bonus_1/2)처럼 손패 줄에 그려서 보여 준다.
+    //       클릭하면 DECK_ONLY(폭탄 뒤집기)를 보낸다. 이미지: hwatu_image/bomb.png
+    public static final int BOMB_ID = -2;
+    public static final String BOMB = DIR + "bomb.png";
+
     private static final String[] MONTHS = {
         "january", "february", "march", "april", "may", "june",
         "july", "august", "september", "october", "november", "december"
@@ -21,6 +26,7 @@ public final class CardCatalog {
         }
         if (cardId == 49) return DIR + "bonus_1.png";
         if (cardId == 50) return DIR + "bonus_2.png";
+        if (cardId == BOMB_ID) return BOMB;
         return BACK;   // 모르는 ID는 뒷면으로 표시
     }
 }

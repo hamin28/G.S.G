@@ -1,5 +1,9 @@
 package gsg.client.ui;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,10 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 // [8-5] 게임방 화면의 "조종 담당".
 //       서버가 보낸 이벤트(ROOM_STATE, DEALER_SELECTION, GAME_START/STATE, GAME_OVER, ROOM_LEFT)를 받아서
@@ -265,6 +265,11 @@ public class GamePanel extends JPanel {
         List<Integer> floorIds = idList(Jx.arr(b, "floor"));
         int stock = Jx.num(b, "stockCount", 0);
 
+        // [8-8] 폭탄패: 서버가 알려 준 폭탄 기회(ownTokens)만큼 손패 줄 끝에 폭탄패를 붙임. 클릭하면 DECK_ONLY
+        // TODO(확인): ownTokens가 폭탄 기회 수를 뜻하는지, 모양(숫자/배열/객체)과 키 이름은 [수신] 로그로 대조
+        int bombs = Jx.count(b.get("ownTokens"));
+        for (int i = 0; i < bombs; i++) handIds.add(CardCatalog.BOMB_ID);
+
         // 내 손패는 "내 차례의 PLAY 단계"에서만 클릭해서 낼 수 있음
         felt.setHand(handIds, myTurn && "PLAY".equals(phase));
         felt.setFloor(floorIds);
@@ -309,8 +314,8 @@ public class GamePanel extends JPanel {
         } else {
             felt.setStatusText("진행 중: " + phase);   // TODO(확인): 이 외의 단계가 있는지
         }
-        // TODO: 흔들기(SHAKE), 폭탄(BOMB), 서비스패(SERVICE), 폭탄 뒤집기(DECK_ONLY)는
-        //       서버 규칙이 어떤 상황에서 요구하는지 확인한 뒤 같은 방식으로 sendAction("SHAKE", cardId) 등을 연결
+        // TODO: 흔들기(SHAKE), 서비스패(SERVICE)는 서버 규칙이 어떤 상황에서 요구하는지 확인한 뒤 같은 방식으로 연결
+        //       (폭탄 BOMB / 폭탄 뒤집기 DECK_ONLY는 onCardClick, 폭탄패는 CardCatalog.BOMB_ID)
     }
 
     // Card 객체 배열 -> 카드 ID 목록
@@ -328,7 +333,28 @@ public class GamePanel extends JPanel {
     // 손패의 카드를 클릭 -> GAME_ACTION / PLAY
     private void onCardClick(int cardId) {
         felt.lockHand();             // 응답이 올 때까지 다시 클릭되지 않게
-        sendAction("PLAY", cardId);
+        if (cardId == CardCatalog.BOMB_ID) {
+            sendAction("DECK_ONLY", null);          // 폭탄패: 손패 대신 더미만 뒤집기
+        } else if (isBomb(cardId)) {
+            sendAction("BOMB", cardId);             // 같은 월 3장 + 바닥 1장 이상: 폭탄
+        } else {
+            sendAction("PLAY", cardId);
+        }
+    }
+
+    // [8-8] 폭탄 조건: 손패에 같은 월이 3장 이상이고 바닥에도 그 월이 있을 때 (일반 패 1~48만)
+    // TODO(확인): 서버가 이 상황을 PLAY가 아니라 BOMB로 요구하는지, 바닥 조건(1장/2장 이상)이 같은지
+    private boolean isBomb(int cardId) {
+        if (lastState == null || cardId < 1 || cardId > 48) return false;
+        int month = (cardId - 1) / 4;
+        int inHand = 0, onFloor = 0;
+        for (int id : idList(Jx.arr(lastState, "ownHand"))) {
+            if (id >= 1 && id <= 48 && (id - 1) / 4 == month) inHand++;
+        }
+        for (int id : idList(Jx.arr(lastState, "floor"))) {
+            if (id >= 1 && id <= 48 && (id - 1) / 4 == month) onFloor++;
+        }
+        return inHand >= 3 && onFloor >= 1;
     }
 
     // [8-8] GAME_ACTION: 최신 상태의 gameId, roundNumber(또는 roundId), version을 그대로 붙여 보낸다.
