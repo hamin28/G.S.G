@@ -277,10 +277,10 @@ public class GamePanel extends JPanel {
         felt.setReadyButton(false, false, "준비");
 
         felt.setOpponentText("상대: " + opponentName
-                + "   점수 " + Jx.num(b, "opponentScore", 0)
+                + "   점수 " + Jx.score(b, "opponentScore")
                 + "   획득 " + Jx.count(b.get("opponentCaptures")) + "장");
         felt.setMyInfoText("나: " + session.nickname
-                + "   점수 " + Jx.num(b, "ownScore", 0)
+                + "   점수 " + Jx.score(b, "ownScore")
                 + "   고 " + Jx.num(b, "ownGo", 0)
                 + "   획득 " + Jx.count(b.get("ownCaptures")) + "장"
                 + "   (더미 " + stock + "장)");
@@ -310,7 +310,7 @@ public class GamePanel extends JPanel {
         } else if ("GO_STOP".equals(phase)) {
             // [7-3] 고/스톱 선택창을 [8-8]에서 서버 요청(GO / STOP)과 연결
             felt.setStatusText("고 또는 스톱을 선택하세요.");
-            askGoStop(Jx.num(b, "ownScore", 0));
+            askGoStop(Jx.score(b, "ownScore"));
         } else {
             felt.setStatusText("진행 중: " + phase);   // TODO(확인): 이 외의 단계가 있는지
         }
@@ -335,26 +335,45 @@ public class GamePanel extends JPanel {
         felt.lockHand();             // 응답이 올 때까지 다시 클릭되지 않게
         if (cardId == CardCatalog.BOMB_ID) {
             sendAction("DECK_ONLY", null);          // 폭탄패: 손패 대신 더미만 뒤집기
+        } else if (cardId >= 49 && cardId <= 50) {
+            sendAction("SERVICE", cardId);          // 서비스패(보너스): PLAY가 아니라 SERVICE
         } else if (isBomb(cardId)) {
-            sendAction("BOMB", cardId);             // 같은 월 3장 + 바닥 1장 이상: 폭탄
+            sendAction("BOMB", cardId);             // 같은 월 3장 + 바닥 1장: 폭탄
+        } else if (isShake(cardId)) {
+            // 같은 월 3장 + 바닥 0장: 흔들기 여부를 물음 (예 = SHAKE, 아니오 = 그냥 PLAY)
+            showPrompt("흔들기", "같은 월 패 3장을 가지고 있습니다. 흔들겠습니까?",
+                    new String[] {"흔들기", "그냥 내기"},
+                    i -> sendAction(i == 0 ? "SHAKE" : "PLAY", cardId));
         } else {
             sendAction("PLAY", cardId);
         }
     }
 
+    // [8-8] 같은 월 카드 수 세기 (일반 패 1~48만)
+    private int countMonth(String key, int month) {
+        if (lastState == null) return 0;
+        int n = 0;
+        for (int id : idList(Jx.arr(lastState, key))) {
+            if (id >= 1 && id <= 48 && (id - 1) / 4 == month) n++;
+        }
+        return n;
+    }
+
+    // [8-8] 흔들기: 손패에 같은 월 3장 이상 + 바닥에 그 월 없음
+    // TODO(확인): 서버가 흔들기를 이 조건에서 SHAKE로만 받는지, "그냥 내기(PLAY)"도 허용하는지
+    private boolean isShake(int cardId) {
+        if (cardId < 1 || cardId > 48) return false;
+        int m = (cardId - 1) / 4;
+        return countMonth("ownHand", m) >= 3 && countMonth("floor", m) == 0;
+    }
+
     // [8-8] 폭탄 조건: 손패에 같은 월이 3장 이상이고 바닥에도 그 월이 있을 때 (일반 패 1~48만)
     // TODO(확인): 서버가 이 상황을 PLAY가 아니라 BOMB로 요구하는지, 바닥 조건(1장/2장 이상)이 같은지
     private boolean isBomb(int cardId) {
-        if (lastState == null || cardId < 1 || cardId > 48) return false;
-        int month = (cardId - 1) / 4;
-        int inHand = 0, onFloor = 0;
-        for (int id : idList(Jx.arr(lastState, "ownHand"))) {
-            if (id >= 1 && id <= 48 && (id - 1) / 4 == month) inHand++;
-        }
-        for (int id : idList(Jx.arr(lastState, "floor"))) {
-            if (id >= 1 && id <= 48 && (id - 1) / 4 == month) onFloor++;
-        }
-        return inHand >= 3 && onFloor >= 1;
+        if (cardId < 1 || cardId > 48) return false;
+        int m = (cardId - 1) / 4;
+        // 한 월은 4장뿐이라 손패 3장이면 바닥에는 최대 1장
+        return countMonth("ownHand", m) >= 3 && countMonth("floor", m) >= 1;
     }
 
     // [8-8] GAME_ACTION: 최신 상태의 gameId, roundNumber(또는 roundId), version을 그대로 붙여 보낸다.
@@ -411,6 +430,18 @@ public class GamePanel extends JPanel {
 
     // GAME_OVER: gameId, roomId, roundNumber, reason, winnerId, settlement, results[playerId, balance, bankrupt], nextDealerId ...
     // TODO(확인): settlement 안의 필드 이름. 지금은 안에 있는 값을 "이름: 값"으로 그대로 보여 줌
+    // 정산 항목 이름을 읽기 쉬운 한글로 (모르는 이름은 그대로)
+    // TODO(확인): settlement의 나머지 필드 이름을 서버 로그로 확인해 이 표에 추가
+    private static String settlementLabel(String key) {
+        switch (key) {
+            case "baseScore": return "기본 점수";
+            case "paidAmount": return "실제 지급액";
+            case "multiplier": return "배율";
+            case "amount": return "계산 금액";
+            default: return key;
+        }
+    }
+
     public void onGameOver(JsonObject b) {
         if (roomId == null) return;
         closePrompt();
@@ -441,7 +472,7 @@ public class GamePanel extends JPanel {
             sb.append("\n[정산]\n");
             for (Map.Entry<String, JsonElement> en : settlement.entrySet()) {
                 if (en.getValue().isJsonPrimitive()) {
-                    sb.append(en.getKey()).append(": ").append(en.getValue().getAsString()).append("\n");
+                    sb.append(settlementLabel(en.getKey())).append(": ").append(en.getValue().getAsString()).append("\n");
                 }
             }
         }

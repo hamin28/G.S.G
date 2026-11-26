@@ -26,6 +26,18 @@ public final class Jx {
         return e.toString();
     }
 
+    // 점수 값: 서버의 ownScore/opponentScore는 숫자가 아니라 {total, ...} 객체이므로 total을 꺼냄 (숫자면 그대로)
+    public static int score(JsonObject o, String key) {
+        if (o == null) return 0;
+        JsonElement e = o.get(key);
+        if (e == null || e.isJsonNull()) return 0;
+        if (e.isJsonPrimitive()) {
+            try { return e.getAsInt(); } catch (Exception ex) { return 0; }
+        }
+        if (e.isJsonObject()) return num(e.getAsJsonObject(), "total", 0);
+        return 0;
+    }
+
     // 정수 값 (없거나 숫자가 아니면 def)
     public static int num(JsonObject o, String key, int def) {
         if (o == null) return def;
