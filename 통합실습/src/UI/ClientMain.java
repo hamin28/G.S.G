@@ -1,4 +1,6 @@
-package gsg.client.ui;
+package UI;
+
+import gsg.client.ui.MainFrame;
 
 import javax.swing.SwingUtilities;
 
